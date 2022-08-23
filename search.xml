@@ -1,21 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2022/08/22/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <title>React</title>
+    <url>/2022/08/23/React/</url>
+    <content><![CDATA[<p>React基础知识</p>
+<span id="more"></span>
+<h2 id="state"><a href="#state" class="headerlink" title="state"></a>state</h2><p>在React中，当组件渲染完毕后，再修改组件中的变量，不会使组件重新渲染，要使得组件可以收到变量的影响，必须在变量修改后对组件进行重新渲染，这里我们就需要一个特殊变量，当这个变量被修改时，组件会重新自动渲染。</p>
+<p>state相当于个变量，只是这个变量在react中进行了注册，React会监控这个变量的变化，当state发生变化时，会自动触发组件的重新渲染，使得我们的修改可以在页面中呈现出来。</p>
+<p>在函数组件中，偶们需要通过钩子函数，获取state</p>
+<p>使用钩子useState()来创建state<br><code>import &#123; useState &#125; from &quot;react&quot;</code></p>
+<p>它需要一个值作为参数，这个值就是state的初始值<br>  该函数会返回一个数组</p>
+<ul>
+<li>数组中第一个元素，是初始值<br>  初始值只用来显示数据，直接修改不会触发组件的重新渲染</li>
+<li>第二个元素，是一个函数，通常命名为serXXX<br>  这个函数用来修改state，调用其修改state后会触发组件的重新渲染，并且使用函数中的值作为新的state值。</li>
+</ul>
+<h3 id="state注意事项"><a href="#state注意事项" class="headerlink" title="state注意事项"></a>state注意事项</h3><p>1、只有state值发生变化时，组件才会重新渲染。<br>2、当state的值是一个对象时，修改时是新的对象去替换旧的对象，意味着类似下面这种方式是不会重新渲染的。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> [obj, setObj] = <span class="title function_">useState</span>(&#123;<span class="attr">name</span>: <span class="string">&#x27;aa&#x27;</span>&#125;);</span><br><span class="line">obj.<span class="property">name</span> = <span class="string">&#x27;bb&#x27;</span>;</span><br><span class="line"><span class="title function_">setObj</span>(obj);</span><br></pre></td></tr></table></figure>
+<p>正确的修改方法：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">setObj</span>(&#123;...obj,<span class="attr">name</span>:<span class="string">&#x27;bb&#x27;</span>&#125;)</span><br></pre></td></tr></table></figure>
+<p>3、通过setState去修改state时，并不代表修改当前的state,它修改的是<strong>组件下一次渲染时state值</strong>。<br>4、setState()会触发组件的重新渲染，它是<strong>异步</strong>的。所以当调用setState()需要调用旧state的值时，一定要注意有可能会出现计算错误的情况。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">setCounter</span>(counter + <span class="number">1</span>);  <span class="comment">// 预期 1 2 3，但如果一秒内点击多次，可能第三次拿到的counter值还是1，出现错误。</span></span><br></pre></td></tr></table></figure>
+<p>为了避免这种情况，可以通过为setState()传递回调函数的形式在修改state。<strong>setState()中回调函数的返回值将会成为新的state值，回调函数执行时，React会将最新的state值作为参数传递</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">setCounter</span>(<span class="function"><span class="params">prevCounter</span> =&gt;</span> prevCounter + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h2 id="DOM对象和useRef"><a href="#DOM对象和useRef" class="headerlink" title="DOM对象和useRef()"></a>DOM对象和useRef()</h2><p>获取原生的DOM对象</p>
+<ul>
+<li>可以使用传统的document来对DOM进行操作</li>
+<li>可以从React处获取DOM对象<br>步骤：<br>1、创建一个存储DOM对象的容器<br>使用useRef()钩子函数<br>钩子函数注意事项：<br>①React中的钩子函数只能用于函数组件或自定义钩子<br>②钩子函数只能在函数组件中调用<br>2、将容器设置为想要获取DOM对象元素的ref属性，React会自动将当前元素的DOM对象，设置为容器current属性<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> h1Ref = <span class="title function_">useRef</span>(); <span class="comment">// h1Ref: &#123;current:&lt;h1&gt;&lt;/h1&gt;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">ref</span>=<span class="string">&#123;h1Ref&#125;</span>&gt;</span>....<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+useRef()返回的就是一个普通的JS对象：<code>&#123;current:undefined&#125;</code>,所以我们直接创建一个js对象，也可以代替useRef(),区别：我们创建的对象，组件每次重新渲染都会重新创建一个新对象，useRef()创建的对象，可以确保每次渲染获取到的都是同一个对象。因此，当你需要一个对象不会因为组件的重新渲染而改变时，使用useRef()。</li>
+</ul>
+<h2 id="类组件"><a href="#类组件" class="headerlink" title="类组件"></a>类组件</h2><ul>
+<li>类组件的props是存储到类的实例对象中，可以直接通过实例对象访问<code>this.props</code></li>
+<li>类组件中state统一存储到了实例对象的state属性中，可以通过<em>this.state</em>访问，通过<em>this.setState</em>对其进行修改。当我们通过this.setState()修改state时，React只会修改设置了的值，但是仅限于<em>直接</em>存储于state中的属性，类似对象这种属性相当于设置了一个新的对象。</li>
+<li>函数组件中，响应函数直接以函数的形式定义在组件中，但是在类组件中，响应函数是以类的方法来定义</li>
+<li>类组件中获取DOM对象，使用React提供的createRef<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> divRef = <span class="title class_">React</span>.<span class="title function_">createRef</span>();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="portal"><a href="#portal" class="headerlink" title="portal"></a>portal</h2><ul>
+<li>组件默认会作为父组件的后代渲染到页面中，但是有些情况下，这种方式会带来一些问题。（子组件层级再高也不会超过父组件）</li>
+<li>通过portal可以将组件渲染到页面的指定位置</li>
+<li>使用方法：<br> 1、在index.html添加一个新的元素<br> 2、修改组件的渲染方式<pre><code>- 通过ReactDOM.createPortal()作为返回值创建元素。
+- 参数：1、jsx(修改前return后的代码)；2、目标位置；
+</code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// index.html</span></span><br><span class="line">&lt;div id=<span class="string">&quot;demo&quot;</span>&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// backdrop.js</span></span><br><span class="line"><span class="keyword">const</span> backdropRoot = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;demo&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Backdrop</span> = (<span class="params">props</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">ReactDOM</span>.<span class="title function_">createPortal</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">   xxxxxx</span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>,backdropRoot);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Fragment"><a href="#Fragment" class="headerlink" title="Fragment"></a>Fragment</h2><p>React.Fragment是一个专门用来作为父容器的组件，它只会将它里面的子元素直接返回，不会创建任何多余的元素。当我们希望有一个父容器，但同时不希望父容器在网页中产生多余的结构时，可以使用。</p>
+<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><p>Context相当于一个公共的存储空间，我们可以将多个组件中都需要访问的数据统一存储到一个Context中,这样无需通过props逐层传递，即可使组件访问到这些数据通过React.createContext()创建context</p>
+<p>使用方法一：</p>
+<ul>
+<li>1、引入context</li>
+<li>2、使用 <strong>Xxx.Consumer</strong> 组件来创建元素<br>Consumer 的标签体需要一个回调函数<br>它会将context设置为回调函数的参数，通过参数就可以访问到context中存储的数据<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// testContext.js</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TestContext</span> = <span class="title class_">React</span>.<span class="title function_">createContext</span>(&#123;</span><br><span class="line">    <span class="attr">content</span>: <span class="string">&#x27;这是公共的数据&#x27;</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">TestContext</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A.js</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">TestContext</span> <span class="keyword">from</span> <span class="string">&quot;../store/testContext&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">A</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">TestContext.Consumer</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            &#123;(ctx)=&gt;&#123;</span></span><br><span class="line"><span class="language-xml">               return <span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                   &#123;ctx.name&#125; - &#123;ctx.age&#125;</span></span><br><span class="line"><span class="language-xml">               <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            &#125;&#125;</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">TestContext.Consumer</span>&gt;</span></span></span><br><span class="line">    );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+使用方法二：</li>
+<li>1.导入Context</li>
+<li>2.使用钩子函数useContext()获取到context，<em>useContext() 需要一个Context作为参数</em>，它会将Context中数据获取并作为返回值返回</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// B.js</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">B</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用钩子函数获取Context</span></span><br><span class="line">    <span class="keyword">const</span> ctx = <span class="title function_">useContext</span>(<span class="title class_">TestContext</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            &#123;ctx.name&#125; -- &#123;ctx.age&#125;</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Xxx.Provider表示数据的<strong>生产者</strong>，可以使用它来指定Context中的数据,通过value来指定Context中存储的数据，这样一来，在该组件的<strong>所有的子组件</strong>中都可以通过Context来访问它所指定数据</p>
+<p>当我们通过Context访问数据时，他会读取离他<strong>最近</strong>的Provider中的数据，如果没有Provider，则读取Context中的默认数据。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;A /&gt; <span class="comment">// A没有Provider,获取content为testContext.js定义的&#x27;这是公共的数据&#x27;</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">TestContext.Provider</span> <span class="attr">value</span>=<span class="string">&#123;&#123;content:</span> &#x27;<span class="attr">第一层数据</span>&#x27;&#125;&#125; &gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">TestContext.Provider</span> <span class="attr">value</span>=<span class="string">&#123;&#123;content:</span> &#x27;<span class="attr">第二层数据</span>&#x27;&#125;&#125; &gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">B</span>/&gt;</span> // B里面获取content为&quot;第二层数据&quot;</span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">TestContext.Provider</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">TestContext.Provider</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h2 id="setState的执行过程"><a href="#setState的执行过程" class="headerlink" title="setState的执行过程"></a>setState的执行过程</h2><p>setState()实际调用dispatchSetDate(),会检查组件当前处于哪个阶段。<br>实际组件存在两个阶段：<strong>渲染阶段</strong>和<strong>非渲染阶段</strong><br>渲染阶段：元素还没渲染到页面中，函数组件的函数体会执行一遍；<strong>此时setState不会检查state值是否相同</strong><br>非渲染阶段：元素已经渲染到页面中，<strong>此时setState会检查state值是否相同</strong>。</p>
+<ul>
+<li>如果值不相同，则会对组件进行重新渲染。</li>
+<li>如果值相同，不对组件进行重新渲染（在一些情况下会继续执行当前组件的渲染，但是这个渲染不会触发其子组件的渲染，这次渲染不会产生实际的效果，这种情况通常发生在值第一次相同时）。</li>
+</ul>
+<h2 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h2><p><code>useEffect()</code>是一个钩子函数，需要一个函数作为参数，这个作为参数的函数，将会在组件渲染完毕后执行，在开发中，可以将那些会产生副作用的代码编写到useEffect的回调函数中，这样就可以避免这些代码影响到组件的渲染</p>
+<ul>
+<li>默认情况下，useEffect()中的函数，会在组件渲染完成后调用，并且是每次渲染完成后都会调用。在useEffect()可以传递一个第二个参数，第二个参数是一个数组，在数组中可以指定Effect的依赖项，指定后<strong>只有当依赖发生变化时，Effect才会被触发</strong>。</li>
+<li>通常会将Effect中使用的所有的局部变量都设置为依赖项，这样一来可以确保这些值发生变化时，会触发Effect的执行。像setState()是由钩子函数useState()生成的，useState()会确保组件的每次渲染都会获取到相同setState()对象(即setCount()这种函数是固定不变的)，所以setState()方法可以不设置到依赖中。</li>
+<li>如果依赖项设置了一个空数组，则意味Effect只会在组件初始化时触发一次。</li>
+<li>在Effect的回调函数中，可以指定一个函数作为返回值，这个函数可以称其为清理函数，它会在<span style="color:red;"><em>下次Effect执行前调用</em></span>，<strong>可以在这个函数中，做一些工作来清除上次Effect执行所带来的的影响</strong><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">useEffect</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">  <span class="keyword">const</span> timer = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Effect触发了！&#x27;</span>);</span><br><span class="line">      props.<span class="title function_">onFilter</span>(keyword);</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">clearTimeout</span>(timer); <span class="comment">// 清除上一次effect的定时器</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">&#125;, [keyword]);</span><br></pre></td></tr></table></figure></li>
+</ul>
 ]]></content>
+      <categories>
+        <category>React</category>
+      </categories>
+      <tags>
+        <tag>React</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>V8引擎的工作原理</title>
+    <url>/2022/08/23/V8%E5%BC%95%E6%93%8E%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>简单了解一下V8引擎的工作原理</p>
+<span id="more"></span>
+<p>我们知道了V8的演进历史，知道目前V8的核心部分为：<br /><strong>解析器（Parser）<br />解释器（Ignition）<br />优化编译器（TurboFan）</strong><br />1.V8脚本引擎的由来。<br />2. V8脚本引擎的演进。<br />3. V8核心模块：解析器，解释器，优化编译器。<br><a name="qJLPh"></a></p>
+<h3 id="V8是怎么执行JavaScript代码的？"><a href="#V8是怎么执行JavaScript代码的？" class="headerlink" title="V8是怎么执行JavaScript代码的？"></a>V8是怎么执行JavaScript代码的？</h3><p>当V8执行JavaScript源码时，首先解析器会把源码解析为<strong>抽象语法树</strong>（Abstract Syntax Tree），解释器再将AST翻译为字节码，一遍解释一遍执行。<br />在此过程中，解释器会记特定代码片段的运行次数，如果代码运行次数超过某个阈值，那么该段代码就被标记为热代码，并将运行信息反馈给优化编译器。<br />优化编译器根据反馈信息，优化并编译字节码，最终生成优化后的机器码，当该段代码再次执行时，不用再次解释，提升了效率。<br />这种在运行时编译代码的技术称之为JIT(即时编译)，通过JIT可以极大提升JavaScript代码的执行性能。<br><a name="vt4Vf"></a></p>
+<h3 id="简单介绍每个的作用"><a href="#简单介绍每个的作用" class="headerlink" title="简单介绍每个的作用"></a>简单介绍每个的作用</h3><ul>
+<li>解析器将 JavaScript 源码解析为 AST，解析过程分为词法分析和语法分析，V8 通过预解析提升解析效率；</li>
+<li>解释器 Ignition 根据 AST 生成字节码并执行。这个过程中会收集执行反馈信息，交给 TurboFan 进行优化编译；</li>
+<li>TurboFan 根据 Ignition 收集的反馈信息，将字节码编译为优化后的机器码，后续 Ignition 用优化机器码代替字节码执行，进而提升性能。<br><a name="sOObc"></a><h4 id="解析器（Parser）如何把源码转成AST？"><a href="#解析器（Parser）如何把源码转成AST？" class="headerlink" title="解析器（Parser）如何把源码转成AST？"></a>解析器（Parser）如何把源码转成AST？</h4>让V8执行我们的编写的源码，就要将源码装换成V8能理解的格式。V8会先把源码解析为抽象语法树（AST），这是用来表示源码的树形结构的对象，这个过程称之为<strong>解析（Parsing）</strong>。<br />解析和编译过程的性能非常重要，V8只有等编译完成后才能运行代码。解析过程如下图：</li>
+</ul>
+<p><img src="/images/v801.png"><br />分为两部分：</p>
+<ol>
+<li>词法分析：将字符流转换为tokens，字符流就是我们编写的一行行代码，token是指语法上不能再分割的最小单位（可能是单个字符，也可能是字符串）图中的Scanner就是V8的<strong>词法分析器</strong>。</li>
+<li>语法分析：根据语法规则，将tokens组成一个有嵌套层级的AST，在此过程，如果源码不符合语法规范，解析过程就会终止，并抛出语法错误。图中的Parser和Pre-Parse都是V8的<strong>语法分析器</strong>。<br><a name="qchFZ"></a><h5 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h5>在V8中，Scanner负责接收Unicode字符流，并将其解析为tokens，提供给解析器使用。比如 var a = 1;，这行代码经过词法分析后的tokens是这样：<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;Keyword&quot;</span>,</span><br><span class="line">        <span class="string">&quot;value&quot;</span>: <span class="string">&quot;var&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;Identifier&quot;</span>,</span><br><span class="line">        <span class="string">&quot;value&quot;</span>: <span class="string">&quot;a&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;Punctuator&quot;</span>,</span><br><span class="line">        <span class="string">&quot;value&quot;</span>: <span class="string">&quot;=&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;Numeric&quot;</span>,</span><br><span class="line">        <span class="string">&quot;value&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;Punctuator&quot;</span>,</span><br><span class="line">        <span class="string">&quot;value&quot;</span>: <span class="string">&quot;;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+包含了五个tokens：</li>
+</ol>
+<ul>
+<li><p>关键字 var</p>
+</li>
+<li><p>标识符 a</p>
+</li>
+<li><p>赋值运算符 =</p>
+</li>
+<li><p>数值 1</p>
+</li>
+<li><p>分隔符 ；<br><a name="OuGtq"></a></p>
+<h5 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h5><p>接下来，V8的解析器会通过语法分析，根据tokens生成AST，var a = 1; 这行代码生成的AST的JSON结构如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;type&quot;</span>: <span class="string">&quot;Program&quot;</span>,</span><br><span class="line">  <span class="string">&quot;start&quot;</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="string">&quot;end&quot;</span>: <span class="number">10</span>,</span><br><span class="line">  <span class="string">&quot;body&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;VariableDeclaration&quot;</span>,</span><br><span class="line">      <span class="string">&quot;start&quot;</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="string">&quot;end&quot;</span>: <span class="number">10</span>,</span><br><span class="line">      <span class="string">&quot;declarations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">&quot;type&quot;</span>: <span class="string">&quot;VariableDeclarator&quot;</span>,</span><br><span class="line">          <span class="string">&quot;start&quot;</span>: <span class="number">4</span>,</span><br><span class="line">          <span class="string">&quot;end&quot;</span>: <span class="number">9</span>,</span><br><span class="line">          <span class="string">&quot;id&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;type&quot;</span>: <span class="string">&quot;Identifier&quot;</span>,</span><br><span class="line">            <span class="string">&quot;start&quot;</span>: <span class="number">4</span>,</span><br><span class="line">            <span class="string">&quot;end&quot;</span>: <span class="number">5</span>,</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: <span class="string">&quot;a&quot;</span></span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="string">&quot;init&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;type&quot;</span>: <span class="string">&quot;Literal&quot;</span>,</span><br><span class="line">            <span class="string">&quot;start&quot;</span>: <span class="number">8</span>,</span><br><span class="line">            <span class="string">&quot;end&quot;</span>: <span class="number">9</span>,</span><br><span class="line">            <span class="string">&quot;value&quot;</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">&quot;raw&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">&quot;kind&quot;</span>: <span class="string">&quot;var&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;sourceType&quot;</span>: <span class="string">&quot;module&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>对生成AST内容感兴趣的可以在 <a href="https://link.juejin.cn/?target=https://astexplorer.net/">astexplorer.net/</a> 中查看。<br />但是，对于一份JavaScript源码，如果所有的源码在执行前都要解析才能执行，那会面临一下问题。</p>
+</li>
+<li><p><strong>代码执行时间变长</strong>：一次性解析所有代码，必然会增加代码的运行时间。</p>
+</li>
+<li><p><strong>消耗更多内存</strong>：解析完的AST，以及根据AST编译后的字节码都会存放在内存中，必然会占用更多内存空间。</p>
+</li>
+<li><p><strong>占用磁盘空间</strong>：编译后的代码会缓存在磁盘上，占用磁盘空间。</p>
+</li>
+</ul>
+<p>所以，现在主流JavaScript引擎都实现了延迟解析（Lazy Parsing）。<br><a name="KWBQo"></a></p>
+<h5 id="延迟解析"><a href="#延迟解析" class="headerlink" title="延迟解析"></a>延迟解析</h5><p>延迟解析的思想：在解析过程中，对于不是立即执行的函数，只进行<strong>预解析（Pre Parser）</strong>,只有当函数调用时，才对函数进行全量解析。<br />进行预解析时，只验证函数语法是否有效，解析函数声明、确定函数作用域。不生成AST，实现预解析的是Pre-Parser解析器。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> res = a + b;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="number">2</span>;</span><br><span class="line"><span class="title function_">foo</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p>由于 Scanner 是按字节流从上往下一行行读取代码的，所以 V8 解析器也是从上往下解析代码。当 V8 解析器遇到函数声明 foo 时，发现它不是立即执行，所以会用 Pre-Parser 解析器对其预解析，过程中只会解析函数声明，不会解析函数内部代码，不会为函数内部代码生成 AST。<br />然后 Ignition 解释器会把 AST 编译为字节码并执行，解释器会按照自上而下的顺序执行代码，先执行 var a = 1;  和 var c = 2; 两个赋值表达式，然后执行函数调用 foo(1, 2) ，这时 Parser 解析器才会继续解析函数内的代码、生成 AST，再交给 Ignition 解释器编译执行。</p>
+<blockquote>
+<p><a name="Yk77z"></a></p>
+</blockquote>
+<h4 id="解释器（Ignition）如何将-AST翻译为字节码并执行？"><a href="#解释器（Ignition）如何将-AST翻译为字节码并执行？" class="headerlink" title="解释器（Ignition）如何将 AST翻译为字节码并执行？"></a>解释器（Ignition）如何将 AST翻译为字节码并执行？</h4><p>在V8架构的演进中，<a href="https://juejin.cn/post/7060870761120006157">浅谈V8脚本引擎的工作原理（二.V8脚本引擎的演进）</a>提到的V8为了解决内存占用问题，引入了字节码。如图，通常一个几十KB的文件，转换为机器码可能就是几十兆，这回消耗巨大内存。<br /><img src="/images/v802.png"><br><a name="LciFb"></a></p>
+<h5 id="什么是字节码"><a href="#什么是字节码" class="headerlink" title="什么是字节码"></a>什么是字节码</h5><p>V8的字节码是对机器码的抽象，语法与汇编有些类似，我们可以把V8字节码看做一个个指令，这些指令组合到一起实现我们编写的功能，采用和物理CPU相同的计算模型进行设计。JavaScript源码的任何功能都可以等价转换成字节码的组合。字节码生成其实是遍历树的过程，V8定义了几百个字节码，可以在V8解释器头文件中查看到所有字节码<a href="https://link.juejin.cn/?target=https://github.com/v8/v8/blob/master/src/interpreter/bytecodes.h">bytecodes.h</a>。<br />解释器在执行字节码时，主要使用通用寄存器和累加寄存器，函数参数和局部变量都保存在通用寄存器中r0,r1，累加寄存器用于保存中间结果（accumulator register）。<br />举例说明字节码执行流程。 首先定义一个含有三个形参的函数f，函数功能就是对参数进行计算，并返回值。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">a, b, c</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> d = c - <span class="number">100</span>;</span><br><span class="line">  <span class="keyword">return</span> a + d * b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">f</span>(<span class="number">5</span>, <span class="number">2</span>, <span class="number">150</span>);</span><br></pre></td></tr></table></figure>
+<p>假设我们以实参5、2、150调用函数，则解释器会把函数编译为字节码。<br />可以通过node –print-bytecode index.js 来查看JavaScript文件生成的字节码。(会生成非常多，取了最后一段重要的)</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$ node --print-bytecode index.<span class="property">js</span></span><br><span class="line">... </span><br><span class="line">[generated bytecode <span class="keyword">for</span> <span class="attr">function</span>: f (<span class="number">0x242cd33a35b9</span> &lt;<span class="title class_">SharedFunctionInfo</span> f&gt;)]</span><br><span class="line"><span class="title class_">Parameter</span> count <span class="number">4</span></span><br><span class="line"><span class="title class_">Register</span> count <span class="number">1</span></span><br><span class="line"><span class="title class_">Frame</span> size <span class="number">8</span></span><br><span class="line">   <span class="number">32</span> S&gt; <span class="number">0x242cd33a3e06</span> @    <span class="number">0</span> : <span class="number">25</span> <span class="number">02</span>             <span class="title class_">Ldar</span> a2</span><br><span class="line">   <span class="number">34</span> E&gt; <span class="number">0x242cd33a3e08</span> @    <span class="number">2</span> : <span class="number">41</span> <span class="number">64</span> <span class="number">00</span>          <span class="title class_">SubSmi</span> [<span class="number">100</span>], [<span class="number">0</span>]</span><br><span class="line">         <span class="number">0x242cd33a3e0b</span> @    <span class="number">5</span> : <span class="number">26</span> fb             <span class="title class_">Star</span> r0</span><br><span class="line">   <span class="number">43</span> S&gt; <span class="number">0x242cd33a3e0d</span> @    <span class="number">7</span> : <span class="number">25</span> <span class="number">03</span>             <span class="title class_">Ldar</span> a1</span><br><span class="line">   <span class="number">56</span> E&gt; <span class="number">0x242cd33a3e0f</span> @    <span class="number">9</span> : <span class="number">36</span> fb <span class="number">02</span>          <span class="title class_">Mul</span> r0, [<span class="number">2</span>]</span><br><span class="line">   <span class="number">52</span> E&gt; <span class="number">0x242cd33a3e12</span> @   <span class="number">12</span> : <span class="number">34</span> <span class="number">04</span> <span class="number">01</span>          <span class="title class_">Add</span> a0, [<span class="number">1</span>]</span><br><span class="line">   <span class="number">60</span> S&gt; <span class="number">0x242cd33a3e15</span> @   <span class="number">15</span> : aa                <span class="title class_">Return</span></span><br><span class="line"><span class="title class_">Constant</span> pool (size = <span class="number">0</span>)</span><br><span class="line"><span class="title class_">Handler</span> <span class="title class_">Table</span> (size = <span class="number">0</span>)</span><br><span class="line"><span class="title class_">Source</span> <span class="title class_">Position</span> <span class="title class_">Table</span> (size = <span class="number">14</span>)</span><br><span class="line"><span class="number">0x242cd33a3e19</span> &lt;<span class="title class_">ByteArray</span>[<span class="number">14</span>]&gt;</span><br></pre></td></tr></table></figure>
+<p>当解释器执行代码时，会把参数分别加载到a0、a1、a2寄存器上（图中 accumulator 表示累加寄存器）然后逐行执行字节码。<br /><img src="/images/v803.png"></p>
+<ul>
+<li>读取形参 c 并做出计算</li>
+<li>Ldar a2: Ldar表示将寄存器的值加载到累加器的操作。a2是加载的数值，加载后，accumulator的值为150。</li>
+</ul>
+<p><img src="/images/v804.png"></p>
+<ul>
+<li>将计算结果放入累加寄存器中。</li>
+<li>SubSmi [100], [0]：SubSmi [100] 表示将累加寄存器的值减少 100，这时 accumulator 的值就变为了 50，[0] 反馈向量 (FeedBack Vector) 的索引，反馈向量记录了函数在执行过程中的一些关键的中间数据。</li>
+</ul>
+<p><img src="/images/v805.png"></p>
+<ul>
+<li>将累加寄存器的值放到r0中临时记录 也是变量b的值</li>
+<li>Star r0：表示把累加器中的值保存到寄存器 r0 中，这时 r0 的值就变为了 50。</li>
+</ul>
+<p><img src="/images/v806.png"></p>
+<ul>
+<li>读取a + d * b语句，先执行d * b</li>
+<li>Ldar a1:表示将寄存器a1的值加载到累加寄存器，这时accumulator的值变为2。</li>
+</ul>
+<p><img src="/images/v807.png"></p>
+<ul>
+<li>继续执行d * b的第二个动作</li>
+<li>Mul r0,[2]：Mul r0 表示将accumulator的值与 r0 寄存器的值相乘，并把结果再次放入累加寄存器，其中 [2] 同样是反馈向量，执行完毕后，accumulator 的值就变为了 100。</li>
+</ul>
+<p><img src="/images/v808.png"></p>
+<ul>
+<li>执行a + 100的动作</li>
+<li>Add a0, [1]：Add a0 表示将累加寄存器的值与 a0 寄存器的值相加，并将结果再次放入累加寄存器，这时 accumulator 的值就变为了 105。</li>
+</ul>
+<p><img src="/images/v809.png"></p>
+<ul>
+<li>Return：表示结束当前函数的执行，并返回累加寄存器中的值，函数执行结果是 105。</li>
+</ul>
+<p>这是解释器执行字节码的简单过程（中间省略了对AST遍历翻译成的字节码的环节），但依旧需要对字节码转换为机器码，CPU只识别机器码。</p>
+<p>看似多了一层字节码的转换感觉效率低了，但相比于机器码，字节码的优势是更方便进行性能优化，最主要是由优化编译器编译热点代码。基于字节码的优化的架构性能远超直接转为机器码的架构性能。<br />前面提到Ignition解释器在执行的过程中，会标记重复执行的热点代码交给TurboFan生成效率更高的机器码，接下来看看TurboFan是如何工作的。<br><a name="QfgVh"></a></p>
+<h4 id="优化编译器（TuboFan）的工作原理"><a href="#优化编译器（TuboFan）的工作原理" class="headerlink" title="优化编译器（TuboFan）的工作原理"></a>优化编译器（TuboFan）的工作原理</h4><p>V8在提示JavaScript性能方面做了很多优化工作,其中最主要的有内联和逃逸分析两种算法。<br><a name="iJeML"></a></p>
+<h5 id="内敛（inlining）"><a href="#内敛（inlining）" class="headerlink" title="内敛（inlining）"></a>内敛（inlining）</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">three</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先我们定义了一个求和函数 add ，函数有两个参数 x 和 y，然后定义了函数 three ，并在函数 three 中调用 add 函数。<br />如果不经优化，直接编译该段代码，则会分别生成两个函数的机器码。但为了进一步提升性能，TurboFan优化编译器首先会对以上两个函数进行内联，然后再编译。<br />由于函数 three 内部的行为就是求 1 和 2 的和，所以上面的代码就等价于下面的：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">three</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>更进一步，由于函数 three_add_inlined 中 x 和 y 的值都是确定的，所以 three_add_inlined 还可以进一步优化，直接返回结果 3 ：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">three_add_const_folded</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/v810.png"><br />通过内联，可以降低复杂度、消除冗余代码、合并常量，并且内联技术通常也是逃逸分析的基础。那什么又是逃逸分析呢？<br><a name="FlH4X"></a></p>
+<h5 id="逃逸分析（Escape-Analysis）"><a href="#逃逸分析（Escape-Analysis）" class="headerlink" title="逃逸分析（Escape Analysis）"></a>逃逸分析（Escape Analysis）</h5><p>分析对象的生命周期是否仅限于当前函数。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">x</span> = x;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">y</span> = y;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">distance</span>(<span class="params">that</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="title function_">abs</span>(<span class="variable language_">this</span>.<span class="property">x</span> - that.<span class="property">x</span>)</span><br><span class="line">         + <span class="title class_">Math</span>.<span class="title function_">abs</span>(<span class="variable language_">this</span>.<span class="property">y</span> - that.<span class="property">y</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">manhattan</span>(<span class="params">x1, y1, x2, y2</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> a = <span class="keyword">new</span> <span class="title class_">Point</span>(x1, y1);</span><br><span class="line">  <span class="keyword">const</span> b = <span class="keyword">new</span> <span class="title class_">Point</span>(x2, y2);</span><br><span class="line">  <span class="keyword">return</span> a.<span class="title function_">distance</span>(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们定义了一个 Point  类，用于表示某个点的坐标，类中有个 distance 方法，用来计算两个点之前的曼哈顿距离。<br />然后我们在 manhattan 函数中 new 了两个点， a 和 b ，并计算 a b 的曼哈顿距离。TurboFan 首先会通过内联，将 manhattan 函数转换为下面这样的函数：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">manhattan_inlined</span>(<span class="params">x1, y1, x2, y2</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> a = &#123;<span class="attr">x</span>:x1, <span class="attr">y</span>:y1&#125;;</span><br><span class="line">  <span class="keyword">const</span> b = &#123;<span class="attr">x</span>:x2, <span class="attr">y</span>:y2&#125;;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="title function_">abs</span>(a.<span class="property">x</span> - b.<span class="property">x</span>)</span><br><span class="line">       + <span class="title class_">Math</span>.<span class="title function_">abs</span>(a.<span class="property">y</span> - b.<span class="property">y</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再接下来就会对 manhattan_inlined 中的对象进行逃逸分析。什么样的对象会被认为是“未逃逸”的呢？主要有以下几个条件：</p>
+<ul>
+<li>对象在函数内部定义；</li>
+<li>对象在作用域函数内部，如：没有被返回、没有传递应用给其他函数等。</li>
+</ul>
+<p>在 manhattan_inlined 中，变量 a b 都是函数内的普通对象，所以它们都是“未逃逸”对象。那么我们就可以对函数中的对象进行替换，使用标量替换掉对象：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">manhattan_scalar_eplacement</span>(<span class="params">x1, y1, x2, y2</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> a_x = x1;</span><br><span class="line">  <span class="keyword">var</span> a_y = y1;</span><br><span class="line">  <span class="keyword">var</span> b_x = x2;</span><br><span class="line">  <span class="keyword">var</span> b_y = y2;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="title function_">abs</span>(a_x - b_x)</span><br><span class="line">       + <span class="title class_">Math</span>.<span class="title function_">abs</span>(a_y - b_y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样函数内就不再有对象定义，取而代之的是 a_x a_y b_x b_y ，且直接来源于函数参数。<br />这样做的好处是，我们可以直接将变量加载到寄存器上，不再需要从内存中访问对象属性了，提升了执行效率的同时还减少了内存使用。</p>
+]]></content>
+      <categories>
+        <category>浏览器</category>
+      </categories>
+      <tags>
+        <tag>浏览器</tag>
+        <tag>javascript</tag>
+      </tags>
   </entry>
 </search>
