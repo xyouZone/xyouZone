@@ -3,9 +3,9 @@
   <entry>
     <title>React</title>
     <url>/2022/08/23/React/</url>
-    <content><![CDATA[<p>React基础知识</p>
+    <content><![CDATA[<h2 id="state"><a href="#state" class="headerlink" title="state"></a>state</h2><p>在React中，当组件渲染完毕后，再修改组件中的变量，不会使组件重新渲染，要使得组件可以收到变量的影响，必须在变量修改后对组件进行重新渲染，这里我们就需要一个特殊变量，当这个变量被修改时，组件会重新自动渲染。</p>
 <span id="more"></span>
-<h2 id="state"><a href="#state" class="headerlink" title="state"></a>state</h2><p>在React中，当组件渲染完毕后，再修改组件中的变量，不会使组件重新渲染，要使得组件可以收到变量的影响，必须在变量修改后对组件进行重新渲染，这里我们就需要一个特殊变量，当这个变量被修改时，组件会重新自动渲染。</p>
+
 <p>state相当于个变量，只是这个变量在react中进行了注册，React会监控这个变量的变化，当state发生变化时，会自动触发组件的重新渲染，使得我们的修改可以在页面中呈现出来。</p>
 <p>在函数组件中，偶们需要通过钩子函数，获取state</p>
 <p>使用钩子useState()来创建state<br><code>import &#123; useState &#125; from &quot;react&quot;</code></p>
@@ -79,11 +79,55 @@ useRef()返回的就是一个普通的JS对象：<code>&#123;current:undefined&#
       </tags>
   </entry>
   <entry>
+    <title>redux</title>
+    <url>/2022/08/27/redux/</url>
+    <content><![CDATA[<p>A Predictable State Container for JS Apps是Redux官方对于Redux的描述，这句话可以这样翻译“一个专为JS应用设计的可预期的状态容器”，简单来说Redux是一个可预测的状态容器。</p>
+<span id="more"></span>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><h4 id="状态（State）"><a href="#状态（State）" class="headerlink" title="状态（State）"></a>状态（State）</h4><p>state直译过来就是状态，使用React这么久了，对于state我们已经是非常的熟悉了。state不过就是一个变量，一个用来记录（组件）状态的变量。组件可以根据不同的状态值切换为不同的显示，比如，用户登录和没登录看到页面应该是不同的，那么用户的登录与否就应该是一个状态。再比如，数据加载与否，显示的界面也应该不同，那么数据本身就是一个状态。换句话说，状态控制了页面的如何显示。</p>
+<p>但是需要注意的是，状态并不是React中或其他类似框架中独有的。所有的编程语言，都有状态，所有的编程语言都会根据不同的状态去执行不同的逻辑，这是一定的。所以状态是什么，状态就是一个变量，用以记录程序执行的情况。</p>
+<h4 id="容器（Container）"><a href="#容器（Container）" class="headerlink" title="容器（Container）"></a>容器（Container）</h4><p>容器当然是用来装东西的，状态容器即用来存储状态的容器。状态多了，自然需要一个东西来存储，但是容器的功能却不是仅仅能存储状态，它实则是一个状态的管理器，除了存储状态外，它还可以用来对state进行查询、修改等所有操作。（编程语言中容器几乎都是这个意思，其作用无非就是对某个东西进行增删改查）</p>
+<h4 id="可预测（Predictable）"><a href="#可预测（Predictable）" class="headerlink" title="可预测（Predictable）"></a>可预测（Predictable）</h4><p>可预测指我们在对state进行各种操作时，其结果是一定的。即以相同的顺序对state执行相同的操作会得到相同的结果。简单来说，Redux中对状态所有的操作都封装到了容器内部，外部只能通过调用容器提供的方法来操作state，而不能直接修改state。这就意味着外部对state的操作都被容器所限制，对state的操作都在容器的掌控之中，也就是可预测。</p>
+<p>总的来说，<strong>Redux是一个稳定、安全的状态管理器</strong>。<br><img src="./redux/redux.png"></p>
+<h4 id="redux与reducer、context"><a href="#redux与reducer、context" class="headerlink" title="redux与reducer、context"></a>redux与reducer、context</h4><p>Redux可以理解为是<em>reducer和context的结合体</em>，使用Redux即可管理复杂的state，又可以在不同的组件间方便的共享传递state。当然，Redux主要使用场景依然是大型应用，大型应用中状态比较复杂，如果只是使用reducer和context，开发起来并不是那么的便利，此时一个有一个功能强大的状态管理器就变得尤为的重要</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><blockquote>
+<p>1.引入redux核心包<br>  2.创建reducer整合函数<br>  3.通过reducer对象创建store<br>  4.对store中的state进行订阅<br>  5.通过dispatch派发state的操作指令</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Redux</span>.<span class="title function_">createStore</span>(reducer, [preloadedState], [enhancer])</span><br></pre></td></tr></table></figure>
+<p>createStore用来创建一个Redux中的容器对象，它需要三个参数：reducer、preloadedState、enhancer。</p>
+<p>reducer是一个函数，是state操作的整合函数，每次修改state时都会触发该函数，它的返回值会成为新的state。</p>
+<p>preloadedState就是state的初始值，可以在这里指定也可以在reducer中指定。</p>
+<p>enhancer增强函数用来对state的功能进行扩展。<br>三个参数中，只有reducer是必须的，来看一个Reducer的示例：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">countReducer</span> = (<span class="params">state = &#123;count:<span class="number">0</span>&#125;, action</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">switch</span> (action.<span class="property">type</span>)&#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;ADD&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="attr">count</span>:state.<span class="property">count</span>+<span class="number">1</span>&#125;;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;SUB&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="attr">count</span>:state.<span class="property">count</span>-<span class="number">1</span>&#125;;</span><br><span class="line">        <span class="attr">default</span>:</span><br><span class="line">            <span class="keyword">return</span> state</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>reducer用来整合关于state的所有操作，容器修改state时会自动调用该函数，函数调用时会接收到两个参数：<em>state</em>和<em>action</em>，state表示当前的state，可以通过该state来计算新的state。<code> state = &#123;count:0&#125;</code>这是在指定state的默认值，如果不指定，第一次调用时state的值会是undefined。也可以将该值指定为createStore()的第二个参数。action是一个普通对象，用来存储操作信息。</p>
+<p>将reducer传递进createStore后，我们会得到一个store对象：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> store = <span class="title class_">Redux</span>.<span class="title function_">createStore</span>(countReducer);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>store对象创建后，对state的所有操作都需要通过它来进行：<br>读取state：store.getState()<br>修改state：store.dispatch({type:’ADD’})</p>
+</blockquote>
+<p>dipatch用来触发state的操作，可以将其理解为是想reducer发送任务的工具。它需要一个对象作为参数，这个对象将会成为reducer的第二个参数action，需要将操作信息设置到对象中传递给reducer。action中最重要的属性是type，type用来识别对state的不同的操作，上例中’ADD’表示增加操作，’SUB’表示减少的操作。</p>
+<p>除了这些方法外，store还拥有一个subscribe方法，这个方法用来订阅state变化的信息。该方法需要一个回调函数作为参数，当store中存储的state发生变化时，回调函数会自动调用，我们可以在回调函数中定义state发生变化时所要触发的操作：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">store.<span class="title function_">subscribe</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// store中state发生变化时触发</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><blockquote>
+<p>1.如果state过于复杂，将会非常难以维护<br>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以通过对state分组来解决这个问题，创建多个reducer，然后将其合并为一个<br>2.state每次操作时，都需要对state进行复制，然后再去修改<br>3.case后边的常量维护起来会比较麻烦</p>
+</blockquote>
+<h4 id="合并reducer"><a href="#合并reducer" class="headerlink" title="合并reducer"></a>合并reducer</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">stuReducer</span> = (<span class="params">state = &#123;</span></span><br><span class="line"><span class="params">    name: <span class="string">&#x27;孙悟空&#x27;</span>,</span></span><br><span class="line"><span class="params">    age: <span class="number">18</span>,</span></span><br><span class="line"><span class="params">    gender: <span class="string">&#x27;男&#x27;</span>,</span></span><br><span class="line"><span class="params">    address: <span class="string">&#x27;花果山&#x27;</span></span></span><br><span class="line"><span class="params">&#125;, action</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">switch</span> (action.<span class="property">type</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;SET_NAME&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                <span class="attr">name</span>: action.<span class="property">payload</span></span><br><span class="line">            &#125;;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;SET_AGE&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                <span class="attr">age</span>: action.<span class="property">payload</span></span><br><span class="line">            &#125;;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;SET_ADDRESS&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                <span class="attr">address</span>: action.<span class="property">payload</span></span><br><span class="line">            &#125;;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;SET_GENDER&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                <span class="attr">gender</span>: action.<span class="property">payload</span></span><br><span class="line">            &#125;;</span><br><span class="line">        <span class="keyword">default</span> :</span><br><span class="line">            <span class="keyword">return</span> state;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">schoolReducer</span> = (<span class="params">state = &#123;</span></span><br><span class="line"><span class="params">    name: <span class="string">&#x27;花果山一小&#x27;</span>,</span></span><br><span class="line"><span class="params">    address: <span class="string">&#x27;花果山大街1号&#x27;</span></span></span><br><span class="line"><span class="params">&#125;, action</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">switch</span> (action.<span class="property">type</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;SET_SCHOOL_NAME&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                <span class="attr">name</span>: action.<span class="property">payload</span></span><br><span class="line">            &#125;;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;SET_SCHOOL_ADDRESS&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                <span class="attr">address</span>: action.<span class="property">payload</span></span><br><span class="line">            &#125;;</span><br><span class="line">        <span class="keyword">default</span> :</span><br><span class="line">            <span class="keyword">return</span> state;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>修改后reducer被拆分为了stuReducer和schoolReducer，拆分后在编写每个reducer时，只需要考虑当前的state数据，不再需要对无关的数据进行复制等操作，简化了reducer的编写。于此同时将不同的功能编写到了不同的reducer中，降低了代码间的耦合，方便对代码进行维护。</p>
+<p>拆分后，还需要使用Redux为我们提供的函数<strong>combineReducer</strong>将多个reducer进行合并，合并后才能传递进createStore来创建store。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> reducer = <span class="title function_">combineReducers</span>(&#123;</span><br><span class="line">    <span class="attr">stu</span>:stuReducer,</span><br><span class="line">    <span class="attr">school</span>:schoolReducer</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">createStore</span>(reducer);</span><br></pre></td></tr></table></figure>
+<p>combineReducer需要一个对象作为参数，对象的属性名可以根据需要指定，比如我们有两种数据stu和school，属性名就命名为stu和school，stu指向stuReducer，school指向schoolReducer。读取数据时，直接通过state.stu读取学生数据，通过state.school读取学校数据。</p>
+]]></content>
+      <categories>
+        <category>React</category>
+      </categories>
+      <tags>
+        <tag>React</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>V8引擎的工作原理</title>
     <url>/2022/08/23/V8%E5%BC%95%E6%93%8E%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p>简单了解一下V8引擎的工作原理</p>
+    <content><![CDATA[<p>我们知道了V8的演进历史，知道目前V8的核心部分为：<br /><strong>解析器（Parser）<br />解释器（Ignition）<br />优化编译器（TurboFan）</strong><br />1.V8脚本引擎的由来。<br />2. V8脚本引擎的演进。<br />3. V8核心模块：解析器，解释器，优化编译器。<br><a name="qJLPh"></a></p>
 <span id="more"></span>
-<p>我们知道了V8的演进历史，知道目前V8的核心部分为：<br /><strong>解析器（Parser）<br />解释器（Ignition）<br />优化编译器（TurboFan）</strong><br />1.V8脚本引擎的由来。<br />2. V8脚本引擎的演进。<br />3. V8核心模块：解析器，解释器，优化编译器。<br><a name="qJLPh"></a></p>
 <h3 id="V8是怎么执行JavaScript代码的？"><a href="#V8是怎么执行JavaScript代码的？" class="headerlink" title="V8是怎么执行JavaScript代码的？"></a>V8是怎么执行JavaScript代码的？</h3><p>当V8执行JavaScript源码时，首先解析器会把源码解析为<strong>抽象语法树</strong>（Abstract Syntax Tree），解释器再将AST翻译为字节码，一遍解释一遍执行。<br />在此过程中，解释器会记特定代码片段的运行次数，如果代码运行次数超过某个阈值，那么该段代码就被标记为热代码，并将运行信息反馈给优化编译器。<br />优化编译器根据反馈信息，优化并编译字节码，最终生成优化后的机器码，当该段代码再次执行时，不用再次解释，提升了效率。<br />这种在运行时编译代码的技术称之为JIT(即时编译)，通过JIT可以极大提升JavaScript代码的执行性能。<br><a name="vt4Vf"></a></p>
 <h3 id="简单介绍每个的作用"><a href="#简单介绍每个的作用" class="headerlink" title="简单介绍每个的作用"></a>简单介绍每个的作用</h3><ul>
 <li>解析器将 JavaScript 源码解析为 AST，解析过程分为词法分析和语法分析，V8 通过预解析提升解析效率；</li>

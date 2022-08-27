@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"xyouzone.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="简单了解一下V8引擎的工作原理">
+  <meta name="description" content="我们知道了V8的演进历史，知道目前V8的核心部分为：解析器（Parser）解释器（Ignition）优化编译器（TurboFan）1.V8脚本引擎的由来。2. V8脚本引擎的演进。3. V8核心模块：解析器，解释器，优化编译器。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="V8引擎的工作原理">
 <meta property="og:url" content="https://xyouzone.github.io/2022/08/23/V8%E5%BC%95%E6%93%8E%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="xyZone">
-<meta property="og:description" content="简单了解一下V8引擎的工作原理">
+<meta property="og:description" content="我们知道了V8的演进历史，知道目前V8的核心部分为：解析器（Parser）解释器（Ignition）优化编译器（TurboFan）1.V8脚本引擎的由来。2. V8脚本引擎的演进。3. V8核心模块：解析器，解释器，优化编译器。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://xyouzone.github.io/images/v801.png">
 <meta property="og:image" content="https://xyouzone.github.io/images/v802.png">
@@ -239,9 +239,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>简单了解一下V8引擎的工作原理</p>
+        <p>我们知道了V8的演进历史，知道目前V8的核心部分为：<br /><strong>解析器（Parser）<br />解释器（Ignition）<br />优化编译器（TurboFan）</strong><br />1.V8脚本引擎的由来。<br />2. V8脚本引擎的演进。<br />3. V8核心模块：解析器，解释器，优化编译器。<br><a name="qJLPh"></a></p>
 <span id="more"></span>
-<p>我们知道了V8的演进历史，知道目前V8的核心部分为：<br /><strong>解析器（Parser）<br />解释器（Ignition）<br />优化编译器（TurboFan）</strong><br />1.V8脚本引擎的由来。<br />2. V8脚本引擎的演进。<br />3. V8核心模块：解析器，解释器，优化编译器。<br><a name="qJLPh"></a></p>
 <h3 id="V8是怎么执行JavaScript代码的？"><a href="#V8是怎么执行JavaScript代码的？" class="headerlink" title="V8是怎么执行JavaScript代码的？"></a>V8是怎么执行JavaScript代码的？</h3><p>当V8执行JavaScript源码时，首先解析器会把源码解析为<strong>抽象语法树</strong>（Abstract Syntax Tree），解释器再将AST翻译为字节码，一遍解释一遍执行。<br />在此过程中，解释器会记特定代码片段的运行次数，如果代码运行次数超过某个阈值，那么该段代码就被标记为热代码，并将运行信息反馈给优化编译器。<br />优化编译器根据反馈信息，优化并编译字节码，最终生成优化后的机器码，当该段代码再次执行时，不用再次解释，提升了效率。<br />这种在运行时编译代码的技术称之为JIT(即时编译)，通过JIT可以极大提升JavaScript代码的执行性能。<br><a name="vt4Vf"></a></p>
 <h3 id="简单介绍每个的作用"><a href="#简单介绍每个的作用" class="headerlink" title="简单介绍每个的作用"></a>简单介绍每个的作用</h3><ul>
 <li>解析器将 JavaScript 源码解析为 AST，解析过程分为词法分析和语法分析，V8 通过预解析提升解析效率；</li>
@@ -364,7 +363,10 @@
     <a href="/2022/08/23/React/" rel="prev" title="React">
       <i class="fa fa-chevron-left"></i> React
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/27/redux/" rel="next" title="redux">
+      redux <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -439,7 +441,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
