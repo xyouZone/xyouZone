@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"xyouzone.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="它山之石，可以攻玉">
+  <meta name="description" content="Vue应用实例当使用Vue3脚手架生成项目后，我们可以在main.js中看到这么一段代码：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue3基础">
 <meta property="og:url" content="https://xyouzone.github.io/2022/08/28/vue3%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="xyZone">
-<meta property="og:description" content="它山之石，可以攻玉">
+<meta property="og:description" content="Vue应用实例当使用Vue3脚手架生成项目后，我们可以在main.js中看到这么一段代码：">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-28T10:19:46.000Z">
-<meta property="article:modified_time" content="2022-08-28T10:20:00.497Z">
+<meta property="article:modified_time" content="2022-08-28T10:24:58.675Z">
 <meta property="article:author" content="xyZ">
 <meta property="article:tag" content="vue">
 <meta name="twitter:card" content="summary">
@@ -205,7 +205,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-08-28 18:19:46 / 修改时间：18:20:00" itemprop="dateCreated datePublished" datetime="2022-08-28T18:19:46+08:00">2022-08-28</time>
+              <time title="创建时间：2022-08-28 18:19:46 / 修改时间：18:24:58" itemprop="dateCreated datePublished" datetime="2022-08-28T18:19:46+08:00">2022-08-28</time>
             </span>
 
           
@@ -219,7 +219,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h3 id="Vue应用实例"><a href="#Vue应用实例" class="headerlink" title="Vue应用实例"></a>Vue应用实例</h3><p>当使用Vue3脚手架生成项目后，我们可以在main.js中看到这么一段代码：</p>
+<span id="more"></span>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./index.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">createApp</span>(<span class="title class_">App</span>).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>首先是<code>createApp</code>,在vue中，每个Vue的应用都是通过createApp函数创建的一个新的应用实例。而我们引入的<code>App.vue</code>则被称为<strong>根组件</strong>，每个应用都需要一个根组件，其他组件将作为其子组件。<code>createApp(App)</code>这个代码就是将APP作为根组件生成一个应用实例，应用实例必须在调用了<code>.mount()</code> 方法后才会渲染出来。该方法接收一个“容器”参数，可以是一个实际的 DOM 元素或是一个 CSS 选择器字符串：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.vue</span></span><br><span class="line">&lt;div id=<span class="string">&quot;app&quot;</span>&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main.js</span></span><br><span class="line">app.<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>应用根组件的内容将会被渲染在容器元素里面。容器元素自己将不会被视为应用的一部分。</p>
+<p>.mount() 方法应该始终在整个应用配置和资源注册完成后被调用。同时请注意，不同于其他资源注册方法，它的返回值是根组件实例而非应用实例。</p>
+<h3 id="reactive"><a href="#reactive" class="headerlink" title="reactive"></a>reactive</h3><p>reactive通常用来创建<strong>对象或者数组</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; reactive &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> state = <span class="title function_">reactive</span>(&#123; <span class="attr">count</span>: <span class="number">0</span> &#125;)</span><br></pre></td></tr></table></figure>
+<p>reactive使用了Proxy实现响应式，返回的是一个原始对象的Proxy，它与原始对象并不是相等的。</p>
+<blockquote>
+<p>对同一个原始对象调用 reactive() 会总是返回同样的代理对象，而对一个已存在的代理对象调用 reactive() 会返回其本身：</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在同一个对象上调用 reactive() 会返回相同的代理</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">reactive</span>(raw) === proxy) <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 在一个代理上调用 reactive() 会返回它自己</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">reactive</span>(proxy) === proxy) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>reactive的局限：</p>
+<ol>
+<li>仅对对象类型有效（对象、数组、map、set），对string、number、boolean这样的原始类型无效。</li>
+<li><code>Vue的响应式系统是通过属性访问进行追踪的</code>，当我们用一个对象去替换了一个响应式对象，或者将响应式对象的属性进行解构时，将会失去响应式。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> state = <span class="title function_">reactive</span>(&#123; <span class="attr">count</span>: <span class="number">0</span> &#125;)</span><br><span class="line"><span class="comment">// 这里用一个新的对象替换了&#123;count: 0&#125;，因此&#123;count: 0&#125;将会丢失响应性</span></span><br><span class="line">state = <span class="title function_">reactive</span>(&#123; <span class="attr">count</span>: <span class="number">1</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> state = <span class="title function_">reactive</span>(&#123; <span class="attr">count</span>: <span class="number">0</span> &#125;)</span><br><span class="line"><span class="comment">// n被赋值出来，失去了响应性，n的变化不会影响state</span></span><br><span class="line"><span class="keyword">let</span> n = state.<span class="property">count</span></span><br><span class="line">n++</span><br></pre></td></tr></table></figure></li>
+</ol>
+
     </div>
 
     
@@ -299,6 +318,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">Vue应用实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reactive"><span class="nav-number">2.</span> <span class="nav-text">reactive</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
