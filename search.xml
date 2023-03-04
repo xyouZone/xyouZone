@@ -331,13 +331,18 @@ useRef()返回的就是一个普通的JS对象：<code>&#123;current:undefined&#
   </entry>
   <entry>
     <title>javascript笔记--defer与async</title>
-    <url>/2023/03/03/javascript%E7%AC%94%E8%AE%B0-defer%E4%B8%8Easync/</url>
+    <url>/2023/03/03/javascript%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="async与defer"><a href="#async与defer" class="headerlink" title="async与defer"></a>async与defer</h3><p>async：可选。表示应该立即开始下载脚本，但不能阻止其他页面动作，比如下载资源或等待其他脚本加载。只对外部脚本文件有效。</p>
 <p>defer：可选。表示脚本可以延迟到文档完全被解析和显示之后再执行。只对外部脚本文件有效。在IE7及更早的版本中，对行内脚本也可以指定这个属性。</p>
 <blockquote>
 <p>当浏览器碰到 script 脚本的时候：<br><code>1 &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;</code><br> 没有 defer 或 async，浏览器会立即加载并执行指定的脚本，“立即”指的是在渲染该 script 标签之下的文档元素之前，也就是说不等待后续载入的文档元素，读到就加载并执行。<br> 2 <code>&lt;script async src=&quot;script.js&quot;&gt;&lt;/script&gt;</code><br> 有 async，加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步）。<br> 3 <code>&lt;script defer src=&quot;myscript.js&quot;&gt;&lt;/script&gt;</code><br>  有 defer，加载后续文档元素的过程将和 script.js 的加载并行进行（异步），但是 script.js 的执行要在所有元素解析完成之后，DOMContentLoaded 事件触发之前完成。</p>
 </blockquote>
 <p><img src="../images/defer_async.jpg"><br>蓝色线代表网络读取，红色线代表执行时间，这俩都是针对脚本的；绿色线代表 HTML 解析。</p>
+<h3 id="let与var–块作用域与函数作用域"><a href="#let与var–块作用域与函数作用域" class="headerlink" title="let与var–块作用域与函数作用域"></a>let与var–块作用域与函数作用域</h3><p>let与var的作用差不多，最明显的区别是：<code>let声明的范围是块作用域，var声明的范围是函数作用域</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;aa&#x27;</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> age = <span class="number">26</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(age); <span class="comment">// 26</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(age) <span class="comment">// 未定义</span></span><br></pre></td></tr></table></figure>
+<p>结合代码来看，age报错了是因为作用域仅限于<code>块</code>，即<code>&#123;&#125;</code>之间，而name没有报错是因为作用域是整个函数内。如果下面这种情况</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;aa&#x27;</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name) <span class="comment">// 未定义，因为name作用域只在test函数内</span></span><br></pre></td></tr></table></figure>
+<p>要清楚了解块作用域与函数作用域的区别，不能觉得var定义的变量在哪里都可以使用</p>
 ]]></content>
       <tags>
         <tag>javascript</tag>
