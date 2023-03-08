@@ -177,6 +177,78 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xyouzone.github.io/2023/03/08/%E4%B8%BA%E4%BB%80%E4%B9%880-1-0-2-0-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/50430396?s=400&u=97c67cae271b4915251898286551f8c09fba8ea6&v=4">
+      <meta itemprop="name" content="xyZ">
+      <meta itemprop="description" content="它山之石，可以攻玉">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xyZone">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/08/%E4%B8%BA%E4%BB%80%E4%B9%880-1-0-2-0-3/" class="post-title-link" itemprop="url">为什么0.1+0.2!=0.3</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-08 23:08:33 / 修改时间：23:27:10" itemprop="dateCreated datePublished" datetime="2023-03-08T23:08:33+08:00">2023-03-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在开发过程遇到一个很奇怪的问题：类似</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = num1.<span class="title function_">toFixed</span>(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">const</span> b = num2.<span class="title function_">toFixed</span>(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">const</span> c = a + b <span class="comment">// 某些时候c会变成x.xxxxxxxxxx</span></span><br></pre></td></tr></table></figure>
+<p>明明是两个两位小数相加，为什么会变成一个这么多位数的小数？<br>在网上查了类似的现象，就发现了这个问题： 为什么<code>0.1 + 0.2 != 0.3</code>?</p>
+<p>要弄清楚这个问题，首先要知道javascript是怎么保存数字的：</p>
+<blockquote>
+<p>JavaScript使用Number类型表示数字（整数和浮点数），遵循 IEEE 754 标准 通过64位来表示一个数字</p>
+</blockquote>
+<p>通过图片具体看一下数字在内存中的表示:<br><img src="../images/js_number.png"></p>
+<ul>
+<li>第0位：符号位，0表示正数，1表示负数(s)</li>
+<li>第1位到第11位：储存指数部分（e）</li>
+<li>第12位到第63位：储存小数部分（即有效数字）f<br>所以在0.1+0.2的过程中，并不是简单的0.1+0.2，计算机先是把0.1和0.2转为了二进制：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.1</span> -&gt; <span class="number">0.0001100110011001</span>...</span><br><span class="line"><span class="number">0.2</span> -&gt; <span class="number">0.0011001100110011</span>...</span><br></pre></td></tr></table></figure>
+可以看到这两个都是无穷小数，所以相加的结果不是0.3，而是<code>0.30000000000000004</code><h4 id="进制转换方法"><a href="#进制转换方法" class="headerlink" title="进制转换方法"></a>进制转换方法</h4><h5 id="十进制整数转换为二进制整数采用”除2取余，逆序排列”法。"><a href="#十进制整数转换为二进制整数采用”除2取余，逆序排列”法。" class="headerlink" title="十进制整数转换为二进制整数采用”除2取余，逆序排列”法。"></a>十进制整数转换为二进制整数采用”除2取余，逆序排列”法。</h5>具体做法是：用2整除十进制整数，可以得到一个商和余数；再用2去除商，又会得到一个商和余数，如此进行，直到商为小于1时为止，然后把先得到的余数作为二进制数的低位有效位，后得到的余数作为二进制数的高位有效位，依次排列起来。<h5 id="十进制小数转换成二进制小数"><a href="#十进制小数转换成二进制小数" class="headerlink" title="十进制小数转换成二进制小数"></a>十进制小数转换成二进制小数</h5>十进制小数转换成二进制小数采用”乘2取整，顺序排列”法。具体做法是：用2乘十进制小数，可以得到积，将积的整数部分取出，再用2乘余下的小数部分，又得到一个积，再将积的整数部分取出，如此进行，直到积中的小数部分为零，此时0或1为二进制的最后一位。或者达到所要求的精度为止。<br>然后把取出的整数部分按顺序排列起来，先取的整数作为二进制小数的高位有效位，后取的整数作为低位有效位。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://xyouzone.github.io/2023/03/03/javascript%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -191,7 +263,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/03/03/javascript%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">javascript笔记--defer与async</a>
+            <a href="/2023/03/03/javascript%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">javascript笔记</a>
         </h2>
 
         <div class="post-meta">
@@ -208,7 +280,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-04 23:22:28" itemprop="dateModified" datetime="2023-03-04T23:22:28+08:00">2023-03-04</time>
+                <time title="修改时间：2023-03-08 23:08:03" itemprop="dateModified" datetime="2023-03-08T23:08:03+08:00">2023-03-08</time>
               </span>
 
           
@@ -233,79 +305,6 @@
 <p>结合代码来看，age报错了是因为作用域仅限于<code>块</code>，即<code>&#123;&#125;</code>之间，而name没有报错是因为作用域是整个函数内。如果下面这种情况</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;aa&#x27;</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name) <span class="comment">// 未定义，因为name作用域只在test函数内</span></span><br></pre></td></tr></table></figure>
 <p>要清楚了解块作用域与函数作用域的区别，不能觉得var定义的变量在哪里都可以使用</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://xyouzone.github.io/2022/12/31/2022%E5%B9%B4%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/50430396?s=400&u=97c67cae271b4915251898286551f8c09fba8ea6&v=4">
-      <meta itemprop="name" content="xyZ">
-      <meta itemprop="description" content="它山之石，可以攻玉">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xyZone">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/12/31/2022%E5%B9%B4%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-12-31 22:19:10" itemprop="dateCreated datePublished" datetime="2022-12-31T22:19:10+08:00">2022-12-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a name="r172O"></a></p>
-<h2 id="年度回顾"><a href="#年度回顾" class="headerlink" title="年度回顾"></a>年度回顾</h2><p>最近看掘金里面，挺多人都写了年终总结，想着自己也写一份，结果拖着拖着就拖到31号了…说实话，今年是变化极大的一年，无论是我，还是这个社会。经济下行，整个互联网都进入了寒冬，看脉脉上时不时都有裁员的消息，不少应届都有被裁的，现在想来我也是运气够好，没有碰到。21年没有写年终总结，那就把这篇当成毕业后的总结吧。<br><a name="Pb3No"></a></p>
-<h2 id="关键词：成长"><a href="#关键词：成长" class="headerlink" title="关键词：成长"></a>关键词：成长</h2><blockquote>
-<p>工作一年半，要说用一个词来总结的话，我第一个想起来的词就是成长。</p>
-</blockquote>
-<p>工作一年半，要说用一个词来总结的话，我第一个想起来的词就是成长。不管是在工作，还是生活上都有了挺多的成长。<br><a name="FamDx"></a></p>
-<h2 id="1-工作成长"><a href="#1-工作成长" class="headerlink" title="1.工作成长"></a>1.工作成长</h2><p>工作上的成长挺明显的，现在回看我刚毕业的那会，技术简直是惨不忍睹，连vue的一些基础属性用的都不是很熟…菜的离谱了属于是，感觉要不是公司缺人面试都过不了。<br />幸好，经过一年半的工作和学习，成长的挺明显的。技术方面，21年的时候由于项目的局限，主要在学习使用vue2，感觉局限比较大，没有机会去尝试新技术。还好在今年分到新组之后，开始尝试了vue3、ts、vite，也在一个小项目里面使用了react，对自己的技术提升比较大。回看这一年半，可以自信地说没有浪费时间。<br />工作方面，有了几个独立完成的项目，也担任过项目负责人(虽然不知道为啥都是紧急项目…不过总算有了点能放在简历上的经历。<br><a name="LYArv"></a></p>
-<h2 id="2-生活成长"><a href="#2-生活成长" class="headerlink" title="2.生活成长"></a>2.生活成长</h2><p>在刚毕业那会儿，我生活技能为0，啥也不懂，找房子都不知道怎么整。现在毕业一年半，中间经历了一次搬家，我的生活技能也练起来了。在22年下半年，我开始学习做菜(感谢b同学送的锅，强迫我走上炸厨房的道路)，还记得第一道菜是西红柿炒鸡蛋，结果因为加多了水做成了西红柿鸡蛋汤，hhhhhh。后来做的多了，跟着菜谱（下厨房yyds）一道道做下来，已经会做好多菜了。虽然有一些还是得看着菜谱，但总算摆脱了”厨房小白“，走出了”新手村“，成就感还是挺大的，以后可以说自己一个人也饿不死了hhhhhh<br><a name="NAApW"></a></p>
-<h2 id="End：总结与期待"><a href="#End：总结与期待" class="headerlink" title="End：总结与期待"></a>End：总结与期待</h2><p>删删改改，总算勉强写完了，自从高中毕业之后除了写论文就没写过这么多字的文章，看来写作能力还是得多练练。2022年是我第一个完整的工作年，想想去年7月份刚毕业的时候，好像也没过去多久，结果就已经过去一年半了，时间啊真的过的太快了。最近看到的负能量比较多，希望23年能慢慢变好，家人朋友都能够健健康康。<br />2023年我的希望：</p>
-<ul>
-<li><input disabled="" type="checkbox"> 多写博客，学typescript、react</li>
-<li><input disabled="" type="checkbox"> github保持活跃</li>
-<li><input disabled="" type="checkbox"> 可能的话买个相机，学学摄影</li>
-<li><input disabled="" type="checkbox"> 找个对象吧</li>
-</ul>
-<p> <br />zxy           <br />2022/12/31 22:13</p>
 
       
     </div>
