@@ -322,8 +322,16 @@ useRef()返回的就是一个普通的JS对象：<code>&#123;current:undefined&#
 <p>结合代码来看，age报错了是因为作用域仅限于<code>块</code>，即<code>&#123;&#125;</code>之间，而name没有报错是因为作用域是整个函数内。如果下面这种情况</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;aa&#x27;</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name) <span class="comment">// 未定义，因为name作用域只在test函数内</span></span><br></pre></td></tr></table></figure>
 <p>要清楚了解块作用域与函数作用域的区别，不能觉得var定义的变量在哪里都可以使用</p>
-<h3 id="变量、缓存与作用域"><a href="#变量、缓存与作用域" class="headerlink" title="变量、缓存与作用域"></a>变量、缓存与作用域</h3><p>ECMAScript变量可以包含两种不同类型的数据：原始值和引用值。<span style="font-weight: bold;">原始值（primitive value）就是最简单的数据，引用值（reference value）则是由多个值构成的对象。</span></p>
-<p>6种原始值：<code>Undefined、Null、Boolean、Number、String和Symbol</code><br>原始值不能有属性，尽管尝试给原始值添加属性不会报错</p>
+<h3 id="变量、缓存与作用域"><a href="#变量、缓存与作用域" class="headerlink" title="变量、缓存与作用域"></a>变量、缓存与作用域</h3><p>ECMAScript变量可以包含两种不同类型的数据：原始值和引用值。<span style="font-weight: bold;">原始值（primitive value）就是最简单的数据，引用值（reference value）则是由多个值构成的对象。</span><br>6种原始值：<code>Undefined、Null、Boolean、Number、String和Symbol</code></p>
+<p>原始值和引用值的区别：</p>
+<ul>
+<li>原始值大小固定，因此保存在<strong>栈内存</strong>上。</li>
+<li>从一个变量到另一个变量复制原始值会创建该值的第二个副本。</li>
+<li>引用值是对象，存储在<strong>堆内存</strong>上。</li>
+<li>包含引用值的变量实际上只包含指向相应对象的一个指针，而不是对象本身。</li>
+<li>从一个变量到另一个变量复制引用值只会复制指针，因此结果是两个变量都指向同一个对象。</li>
+</ul>
+<p>原始值不能有属性，尽管尝试给原始值添加属性不会报错</p>
 <blockquote>
 <p>注意，原始类型的初始化可以只使用原始字面量形式。如果使用的是new关键字，则JavaScript会创建一个<strong>Object</strong>类型的实例，但其行为类似原始值。下面来看看这两种初始化方式的差异：</p>
 </blockquote>
