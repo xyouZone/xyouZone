@@ -360,4 +360,25 @@ useRef()返回的就是一个普通的JS对象：<code>&#123;current:undefined&#
         <tag>javascript</tag>
       </tags>
   </entry>
+  <entry>
+    <title>javascript的垃圾回收机制</title>
+    <url>/2023/03/12/javascript%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<p>JavaScript是使用垃圾回收的语言，也就是说执行环境负责在代码执行时管理内存。在C和C++等语言中，跟踪内存使用对开发者来说是个很大的负担，也是很多问题的来源。JavaScript为开发者卸下了这个负担，通过自动内存管理实现内存分配和闲置资源回收。</p>
+<p>基本思路很简单：<strong>确定哪个变量不会再使用，然后释放它占用的内存。这个过程是周期性的，即垃圾回收程序每隔一定时间（或者说在代码执行过程中某个预定的收集时间）就会自动运行</strong>。</p>
+<p>垃圾回收过程是一个近似且不完美的方案，因为某块内存是否还有用，属于“不可判定的”问题，意味着靠算法是解决不了的。我们以函数中局部变量的正常生命周期为例。函数中的局部变量会在函数执行时存在。此时，栈（或堆）内存会分配空间以保存相应的值。函数在内部使用了变量，然后退出。此时，就不再需要那个局部变量了，它占用的内存可以释放，供后面使用。这种情况下显然不再需要局部变量了，但并不是所有时候都会这么明显。垃圾回收程序必须跟踪记录哪个变量还会使用，以及哪个变量不会再使用，以便回收内存。如何标记未使用的变量也许有不同的实现方式。不过，在浏览器的发展史上，用到过两种主要的标记策略：<strong>标记清理和引用计数</strong></p>
+<h4 id="标记清理"><a href="#标记清理" class="headerlink" title="标记清理"></a>标记清理</h4><p>javaScript最常用的垃圾回收策略是<strong>标记清理</strong>。</p>
+<blockquote>
+<p>垃圾回收程序运行的时候，会<em>标记内存中存储的所有变量</em>（标记方法有很多种,比如，当变量进入上下文时，反转某一位；或者可以维护“在上下文中”和“不在上下文中”两个变量列表，可以把变量从一个列表转移到另一个列表）。<br>然后，它会将所有在上下文中的变量，以及被在上下文中的变量引用的变量的标记去掉。在此之后再被加上标记的变量就是待删除的了，原因是任何在上下文中的变量都访问不到它们了。随后垃圾回收程序做一次内存清理，销毁带标记的所有值并收回它们的内存。</p>
+</blockquote>
+<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><p>引用计数没那么常用，思路是：</p>
+<blockquote>
+<p>对每个值都<em>记录它被引用的次数</em>。声明变量并给它赋一个引用值时，这个值的引用数为1。如果同一个值又被赋给另一个变量，那么引用数加1。类似地，如果保存对该值引用的变量被其他值给覆盖了，那么引用数减1。当一个值的引用数为0时，就说明没办法再访问到这个值了，因此可以安全地收回其内存了。垃圾回收程序下次运行的时候就会释放引用数为0的值的内存。</p>
+</blockquote>
+<p>但是，引用计数有个问题：<strong>循环引用</strong>，就是对象A有一个指针指向B，而B也引用A的情况：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// objectA和objectB通过各自的属性相互引用，意味着它们的引用数都是2，永远不会变成0</span></span><br><span class="line"><span class="comment">// 如果使用引用计数，这两个对象在函数结束后也不会被回收，内存不会被释放</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">problem</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> objectA = <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">    <span class="keyword">let</span> objectB = <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">    objectA.<span class="property">someOtherObject</span> = objectB;</span><br><span class="line">    objectB.<span class="property">anotherObject</span> = objectA;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+      </tags>
+  </entry>
 </search>
