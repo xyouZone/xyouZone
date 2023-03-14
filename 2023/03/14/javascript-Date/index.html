@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"xyouzone.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="年度回顾最近看掘金里面，挺多人都写了年终总结，想着自己也写一份，结果拖着拖着就拖到31号了…说实话，今年是变化极大的一年，无论是我，还是这个社会。经济下行，整个互联网都进入了寒冬，看脉脉上时不时都有裁员的消息，不少应届都有被裁的，现在想来我也是运气够好，没有碰到。21年没有写年终总结，那就把这篇当成毕业后的总结吧。">
+  <meta name="description" content="ECMAScript的Date类型参考了Java早期版本中的java.util.Date。为此，Date类型将日期保存为自协调世界时（UTC, Universal Time Coordinated）时间1970年1月1日午夜（零时）至今所经过的毫秒数。使用这种存储格式，Date类型可以精确表示1970年1月1日之前及之后285616年的日期。 基本使用1let now &#x3D; new Date();">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2022年终总结">
-<meta property="og:url" content="https://xyouzone.github.io/2022/12/31/2022%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:title" content="javascript-Date">
+<meta property="og:url" content="https://xyouzone.github.io/2023/03/14/javascript-Date/index.html">
 <meta property="og:site_name" content="xyZone">
-<meta property="og:description" content="年度回顾最近看掘金里面，挺多人都写了年终总结，想着自己也写一份，结果拖着拖着就拖到31号了…说实话，今年是变化极大的一年，无论是我，还是这个社会。经济下行，整个互联网都进入了寒冬，看脉脉上时不时都有裁员的消息，不少应届都有被裁的，现在想来我也是运气够好，没有碰到。21年没有写年终总结，那就把这篇当成毕业后的总结吧。">
+<meta property="og:description" content="ECMAScript的Date类型参考了Java早期版本中的java.util.Date。为此，Date类型将日期保存为自协调世界时（UTC, Universal Time Coordinated）时间1970年1月1日午夜（零时）至今所经过的毫秒数。使用这种存储格式，Date类型可以精确表示1970年1月1日之前及之后285616年的日期。 基本使用1let now &#x3D; new Date();">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-12-31T14:17:18.000Z">
-<meta property="article:modified_time" content="2022-12-31T14:19:37.298Z">
+<meta property="article:published_time" content="2023-03-14T15:39:18.000Z">
+<meta property="article:modified_time" content="2023-03-14T15:52:51.759Z">
 <meta property="article:author" content="xyZ">
-<meta property="article:tag" content="年终总结">
+<meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://xyouzone.github.io/2022/12/31/2022%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/">
+<link rel="canonical" href="https://xyouzone.github.io/2023/03/14/javascript-Date/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 <link rel="stylesheet" type="text/css" href="/css/injector/main.css" /><link rel="preload" as="style" href="/css/injector/light.css" /><link rel="preload" as="style" href="/css/injector/dark.css" />
-  <title>2022年终总结 | xyZone</title>
+  <title>javascript-Date | xyZone</title>
   
 
 
@@ -181,7 +181,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://xyouzone.github.io/2022/12/31/2022%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="https://xyouzone.github.io/2023/03/14/javascript-Date/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/50430396?s=400&u=97c67cae271b4915251898286551f8c09fba8ea6&v=4">
@@ -194,7 +194,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          2022年终总结
+          javascript-Date
         </h1>
 
         <div class="post-meta">
@@ -205,16 +205,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-12-31 22:17:18 / 修改时间：22:19:37" itemprop="dateCreated datePublished" datetime="2022-12-31T22:17:18+08:00">2022-12-31</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">年终总结</span></a>
-                </span>
+              <time title="创建时间：2023-03-14 23:39:18 / 修改时间：23:52:51" itemprop="dateCreated datePublished" datetime="2023-03-14T23:39:18+08:00">2023-03-14</time>
             </span>
 
           
@@ -228,24 +219,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="r172O"></a></p>
-<h2 id="年度回顾"><a href="#年度回顾" class="headerlink" title="年度回顾"></a>年度回顾</h2><p>最近看掘金里面，挺多人都写了年终总结，想着自己也写一份，结果拖着拖着就拖到31号了…说实话，今年是变化极大的一年，无论是我，还是这个社会。经济下行，整个互联网都进入了寒冬，看脉脉上时不时都有裁员的消息，不少应届都有被裁的，现在想来我也是运气够好，没有碰到。21年没有写年终总结，那就把这篇当成毕业后的总结吧。</p>
-<span id="more"></span>
-<p><a name="Pb3No"></a></p>
-<h2 id="关键词：成长"><a href="#关键词：成长" class="headerlink" title="关键词：成长"></a>关键词：成长</h2><blockquote>
-<p>工作一年半，要说用一个词来总结的话，我第一个想起来的词就是成长。</p>
+        <p>ECMAScript的Date类型参考了Java早期版本中的java.util.Date。为此，Date类型将日期保存为自协调世界时（UTC, Universal Time Coordinated）时间1970年1月1日午夜（零时）至今所经过的毫秒数。使用这种存储格式，Date类型可以精确表示1970年1月1日之前及之后285616年的日期。</p>
+<h4 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> now = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br></pre></td></tr></table></figure>
+<h4 id="两个辅助方法"><a href="#两个辅助方法" class="headerlink" title="两个辅助方法"></a>两个辅助方法</h4><p>在不给Date构造函数传参数的情况下，创建的对象将保存当前日期和时间。要基于其他日期和时间创建日期对象，必须传入其毫秒表示（UNIX纪元1970年1月1日午夜之后的毫秒数）。ECMAScript为此提供了两个辅助方法：**Date.parse()和Date.UTC()**。</p>
+<h5 id="Date-parse"><a href="#Date-parse" class="headerlink" title="Date.parse()"></a>Date.parse()</h5><p>Date.parse()方法接收一个表示日期的字符串参数，尝试将这个字符串转换为表示该日期的毫秒数。格式如下：</p>
+<blockquote>
+<p>“月/日/年”，如”5/23/2019”；<br>  “月名 日，年”，如”May 23, 2019”；<br>  “周几 月名 日 年 时：分：秒 时区”，如”Tue May 232019 00:00:00 GMT-0700”；<br>  ISO 8601扩展格式“YYYY-MM-DDTHH:mm:ss.sssZ”，如2019-05-23T00:00:00（只适用于兼容ES5的实现）</p>
 </blockquote>
-<p>工作一年半，要说用一个词来总结的话，我第一个想起来的词就是成长。不管是在工作，还是生活上都有了挺多的成长。<br><a name="FamDx"></a></p>
-<h2 id="1-工作成长"><a href="#1-工作成长" class="headerlink" title="1.工作成长"></a>1.工作成长</h2><p>工作上的成长挺明显的，现在回看我刚毕业的那会，技术简直是惨不忍睹，连vue的一些基础属性用的都不是很熟…菜的离谱了属于是，感觉要不是公司缺人面试都过不了。<br />幸好，经过一年半的工作和学习，成长的挺明显的。技术方面，21年的时候由于项目的局限，主要在学习使用vue2，感觉局限比较大，没有机会去尝试新技术。还好在今年分到新组之后，开始尝试了vue3、ts、vite，也在一个小项目里面使用了react，对自己的技术提升比较大。回看这一年半，可以自信地说没有浪费时间。<br />工作方面，有了几个独立完成的项目，也担任过项目负责人(虽然不知道为啥都是紧急项目…不过总算有了点能放在简历上的经历。<br><a name="LYArv"></a></p>
-<h2 id="2-生活成长"><a href="#2-生活成长" class="headerlink" title="2.生活成长"></a>2.生活成长</h2><p>在刚毕业那会儿，我生活技能为0，啥也不懂，找房子都不知道怎么整。现在毕业一年半，中间经历了一次搬家，我的生活技能也练起来了。在22年下半年，我开始学习做菜(感谢b同学送的锅，强迫我走上炸厨房的道路)，还记得第一道菜是西红柿炒鸡蛋，结果因为加多了水做成了西红柿鸡蛋汤，hhhhhh。后来做的多了，跟着菜谱（下厨房yyds）一道道做下来，已经会做好多菜了。虽然有一些还是得看着菜谱，但总算摆脱了”厨房小白“，走出了”新手村“，成就感还是挺大的，以后可以说自己一个人也饿不死了hhhhhh<br><a name="NAApW"></a></p>
-<h2 id="End：总结与期待"><a href="#End：总结与期待" class="headerlink" title="End：总结与期待"></a>End：总结与期待</h2><p>删删改改，总算勉强写完了，自从高中毕业之后除了写论文就没写过这么多字的文章，看来写作能力还是得多练练。2022年是我第一个完整的工作年，想想去年7月份刚毕业的时候，好像也没过去多久，结果就已经过去一年半了，时间啊真的过的太快了。最近看到的负能量比较多，希望23年能慢慢变好，家人朋友都能够健健康康。<br />2023年我的希望：</p>
-<ul>
-<li><input disabled="" type="checkbox"> 多写博客，学typescript、react</li>
-<li><input disabled="" type="checkbox"> github保持活跃</li>
-<li><input disabled="" type="checkbox"> 可能的话买个相机，学学摄影</li>
-<li><input disabled="" type="checkbox"> 找个对象吧</li>
-</ul>
-<p> <br />zxy           <br />2022/12/31 22:13</p>
+<p>如果传给Date.parse()的字符串<em>并不表示日期</em>，则该方法会返回NaN。如果直接把表示日期的字符串传给Date构造函数，那么**Date会在后台调用Date.parse()**。换句话说，下面两行代码是等价的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> someDate = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="string">&quot;May 23, 2019&quot;</span>);</span><br><span class="line">等同于</span><br><span class="line"><span class="keyword">let</span> someDate = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="title class_">Date</span>.<span class="title function_">parse</span>(<span class="string">&quot;May 23, 2019&quot;</span>));</span><br></pre></td></tr></table></figure>
+<h5 id="Date-UTC"><a href="#Date-UTC" class="headerlink" title="Date.UTC()"></a>Date.UTC()</h5><p>Date.UTC()方法也返回日期的毫秒表示，但使用的是跟Date.parse()不同的信息来生成这个值。传给Date.UTC()的参数是年、零起点月数（1月是0,2月是1，以此类推）、日（1 ~ 31）、时（0 ~ 23）、分、秒和毫秒。这些参数中，只有前两个（年和月）是必需的。如果不提供日，那么默认为1日。其他参数的默认值都是0。</p>
+<p>与Date.parse()一样，Date.UTC()也会被Date构造函数隐式调用，但有一个区别：<strong>这种情况下创建的是本地日期，不是GMT日期</strong></p>
+<h5 id="toLocaleString-、toString-和valueOf"><a href="#toLocaleString-、toString-和valueOf" class="headerlink" title="toLocaleString()、toString()和valueOf()"></a>toLocaleString()、toString()和valueOf()</h5><p>Date类型重写了toLocaleString()、toString()和valueOf()方法。但与其他类型不同，重写后这些方法的返回值不一样。</p>
+<blockquote>
+<p>Date类型的toLocaleString()方法返回与浏览器运行的本地环境一致的日期和时间。这通常意味着格式中包含针对时间的AM（上午）或PM（下午），但不包含时区信息（具体格式可能因浏览器而不同）<br>toString()方法通常返回带时区信息的日期和时间，而时间也是以24小时制（0~23）表示的。<br>Date类型的valueOf()方法根本就不返回字符串，这个方法被重写后返回的是日期的毫秒表示。因此，操作符（如小于号和大于号）可以直接使用它返回的值。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">toLocaleString</span>() -<span class="number">2</span>/<span class="number">1</span>/<span class="number">2019</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span> <span class="variable constant_">AM</span></span><br><span class="line"><span class="title function_">toString</span>() - <span class="title class_">Thu</span> <span class="title class_">Feb</span> <span class="number">12019</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> <span class="variable constant_">GMT</span>-<span class="number">0800</span> (<span class="title class_">Pacific</span> <span class="title class_">Standard</span> <span class="title class_">Time</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> date1 = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2019</span>, <span class="number">0</span>, <span class="number">1</span>);     <span class="comment">// 2019年1月1日</span></span><br><span class="line"><span class="keyword">let</span> date2 = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2019</span>, <span class="number">1</span>, <span class="number">1</span>);     <span class="comment">// 2019年2月1日</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(date1 &lt; date2); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(date1 &gt; date2); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h4 id="日期格式化方法"><a href="#日期格式化方法" class="headerlink" title="日期格式化方法"></a>日期格式化方法</h4><p>Date类型有几个专门用于格式化日期的方法，它们都会返回字符串：</p>
+<blockquote>
+<p>toDateString()显示日期中的周几、月、日、年（格式特定于实现）；<br>  toTimeString()显示日期中的时、分、秒和时区（格式特定于实现）；<br>  toLocaleDateString()显示日期中的周几、月、日、年（格式特定于实现和地区）；toLocaleTimeString()显示日期中的时、分、秒（格式特定于实现和地区）；<br>  toUTCString()显示完整的UTC日期（格式特定于实现）。</p>
+</blockquote>
 
     </div>
 
@@ -255,7 +248,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" rel="tag"># 年终总结</a>
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
           </div>
 
         
@@ -264,13 +257,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/08/30/%E6%97%A5%E5%B8%B8%E7%BB%8F%E9%AA%8C/" rel="prev" title="日常经验">
-      <i class="fa fa-chevron-left"></i> 日常经验
+    <a href="/2023/03/12/javascript%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" rel="prev" title="javascript的垃圾回收机制">
+      <i class="fa fa-chevron-left"></i> javascript的垃圾回收机制
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/03/03/javascript%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="javascript笔记">
-      javascript笔记 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -329,7 +319,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B4%E5%BA%A6%E5%9B%9E%E9%A1%BE"><span class="nav-number">1.</span> <span class="nav-text">年度回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%9A%E6%88%90%E9%95%BF"><span class="nav-number">2.</span> <span class="nav-text">关键词：成长</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%B7%A5%E4%BD%9C%E6%88%90%E9%95%BF"><span class="nav-number">3.</span> <span class="nav-text">1.工作成长</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%94%9F%E6%B4%BB%E6%88%90%E9%95%BF"><span class="nav-number">4.</span> <span class="nav-text">2.生活成长</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#End%EF%BC%9A%E6%80%BB%E7%BB%93%E4%B8%8E%E6%9C%9F%E5%BE%85"><span class="nav-number">5.</span> <span class="nav-text">End：总结与期待</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">基本使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E8%BE%85%E5%8A%A9%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">两个辅助方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Date-parse"><span class="nav-number">2.1.</span> <span class="nav-text">Date.parse()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Date-UTC"><span class="nav-number">2.2.</span> <span class="nav-text">Date.UTC()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#toLocaleString-%E3%80%81toString-%E5%92%8CvalueOf"><span class="nav-number">2.3.</span> <span class="nav-text">toLocaleString()、toString()和valueOf()</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">日期格式化方法</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
