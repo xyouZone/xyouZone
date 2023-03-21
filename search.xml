@@ -309,44 +309,6 @@ useRef()返回的就是一个普通的JS对象：<code>&#123;current:undefined&#
       </tags>
   </entry>
   <entry>
-    <title>javascript笔记</title>
-    <url>/2023/03/03/javascript%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h3 id="async与defer"><a href="#async与defer" class="headerlink" title="async与defer"></a>async与defer</h3><p>async：可选。表示应该立即开始下载脚本，但不能阻止其他页面动作，比如下载资源或等待其他脚本加载。只对外部脚本文件有效。</p>
-<p>defer：可选。表示脚本可以延迟到文档完全被解析和显示之后再执行。只对外部脚本文件有效。在IE7及更早的版本中，对行内脚本也可以指定这个属性。</p>
-<blockquote>
-<p>当浏览器碰到 script 脚本的时候：<br><code>1 &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;</code><br> 没有 defer 或 async，浏览器会立即加载并执行指定的脚本，“立即”指的是在渲染该 script 标签之下的文档元素之前，也就是说不等待后续载入的文档元素，读到就加载并执行。<br> 2 <code>&lt;script async src=&quot;script.js&quot;&gt;&lt;/script&gt;</code><br> 有 async，加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步）。<br> 3 <code>&lt;script defer src=&quot;myscript.js&quot;&gt;&lt;/script&gt;</code><br>  有 defer，加载后续文档元素的过程将和 script.js 的加载并行进行（异步），但是 script.js 的执行要在所有元素解析完成之后，DOMContentLoaded 事件触发之前完成。</p>
-</blockquote>
-<p><img src="../images/defer_async.jpg"><br>蓝色线代表网络读取，红色线代表执行时间，这俩都是针对脚本的；绿色线代表 HTML 解析。</p>
-<h3 id="let与var–块作用域与函数作用域"><a href="#let与var–块作用域与函数作用域" class="headerlink" title="let与var–块作用域与函数作用域"></a>let与var–块作用域与函数作用域</h3><p>let与var的作用差不多，最明显的区别是：<code>let声明的范围是块作用域，var声明的范围是函数作用域</code></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;aa&#x27;</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> age = <span class="number">26</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(age); <span class="comment">// 26</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(age) <span class="comment">// 未定义</span></span><br></pre></td></tr></table></figure>
-<p>结合代码来看，age报错了是因为作用域仅限于<code>块</code>，即<code>&#123;&#125;</code>之间，而name没有报错是因为作用域是整个函数内。如果下面这种情况</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;aa&#x27;</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name) <span class="comment">// 未定义，因为name作用域只在test函数内</span></span><br></pre></td></tr></table></figure>
-<p>要清楚了解块作用域与函数作用域的区别，不能觉得var定义的变量在哪里都可以使用</p>
-<h3 id="变量、缓存与作用域"><a href="#变量、缓存与作用域" class="headerlink" title="变量、缓存与作用域"></a>变量、缓存与作用域</h3><p>ECMAScript变量可以包含两种不同类型的数据：原始值和引用值。<span style="font-weight: bold;">原始值（primitive value）就是最简单的数据，引用值（reference value）则是由多个值构成的对象。</span><br>6种原始值：<code>Undefined、Null、Boolean、Number、String和Symbol</code></p>
-<p>原始值和引用值的区别：</p>
-<ul>
-<li>原始值大小固定，因此保存在<strong>栈内存</strong>上。</li>
-<li>从一个变量到另一个变量复制原始值会创建该值的第二个副本。</li>
-<li>引用值是对象，存储在<strong>堆内存</strong>上。</li>
-<li>包含引用值的变量实际上只包含指向相应对象的一个指针，而不是对象本身。</li>
-<li>从一个变量到另一个变量复制引用值只会复制指针，因此结果是两个变量都指向同一个对象。</li>
-</ul>
-<p>原始值不能有属性，尽管尝试给原始值添加属性不会报错</p>
-<blockquote>
-<p>注意，原始类型的初始化可以只使用原始字面量形式。如果使用的是new关键字，则JavaScript会创建一个<strong>Object</strong>类型的实例，但其行为类似原始值。下面来看看这两种初始化方式的差异：</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> name1 = <span class="string">&quot;Nicholas&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> name2 = <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;Matt&quot;</span>);</span><br><span class="line">name1.<span class="property">age</span> = <span class="number">27</span>;</span><br><span class="line">name2.<span class="property">age</span> = <span class="number">26</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name1.<span class="property">age</span>);     <span class="comment">// undefined</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name2.<span class="property">age</span>);     <span class="comment">// 26</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">typeof</span> name1); <span class="comment">// string</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">typeof</span> name2); <span class="comment">// object</span></span><br></pre></td></tr></table></figure>
-
-<p>ECMAScript中所有函数的参数都是按值传递的。这意味着函数外的值会被复制到函数内部的参数中，就像从一个变量复制到另一个变量一样。如果是原始值，那么就跟原始值变量的复制一样，如果是引用值，那么就跟引用值变量的复制一样。</p>
-<p><strong>typeof可以判断原始值，对引用值不好判断</strong>。即可以拿来判断一个变量是否为字符串、数值、布尔值或undefined，当<em>值是对象或null，那么typeof返回”object”</em><br>判断引用值： <strong>instanceof</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">用法：result= variableinstanceof constructor</span><br><span class="line"></span><br><span class="line">  console.log(person instanceof Object);   // 变量person是Object吗？</span><br><span class="line">  console.log(colors instanceof Array);    // 变量colors是Array吗？</span><br><span class="line">  console.log(pattern instanceof RegExp); // 变量pattern是RegExp吗？</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>javascript</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>为什么0.1+0.2!=0.3</title>
     <url>/2023/03/08/%E4%B8%BA%E4%BB%80%E4%B9%880-1-0-2-0-3/</url>
     <content><![CDATA[<p>在开发过程遇到一个很奇怪的问题：类似</p>
@@ -384,34 +346,6 @@ useRef()返回的就是一个普通的JS对象：<code>&#123;current:undefined&#
 </blockquote>
 <p>但是，引用计数有个问题：<strong>循环引用</strong>，就是对象A有一个指针指向B，而B也引用A的情况：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// objectA和objectB通过各自的属性相互引用，意味着它们的引用数都是2，永远不会变成0</span></span><br><span class="line"><span class="comment">// 如果使用引用计数，这两个对象在函数结束后也不会被回收，内存不会被释放</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">problem</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> objectA = <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">    <span class="keyword">let</span> objectB = <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">    objectA.<span class="property">someOtherObject</span> = objectB;</span><br><span class="line">    objectB.<span class="property">anotherObject</span> = objectA;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>javascript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>javascript-Date</title>
-    <url>/2023/03/14/javascript-Date/</url>
-    <content><![CDATA[<p>ECMAScript的Date类型参考了Java早期版本中的java.util.Date。为此，Date类型将日期保存为自协调世界时（UTC, Universal Time Coordinated）时间1970年1月1日午夜（零时）至今所经过的毫秒数。使用这种存储格式，Date类型可以精确表示1970年1月1日之前及之后285616年的日期。</p>
-<h4 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> now = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br></pre></td></tr></table></figure>
-<h4 id="两个辅助方法"><a href="#两个辅助方法" class="headerlink" title="两个辅助方法"></a>两个辅助方法</h4><p>在不给Date构造函数传参数的情况下，创建的对象将保存当前日期和时间。要基于其他日期和时间创建日期对象，必须传入其毫秒表示（UNIX纪元1970年1月1日午夜之后的毫秒数）。ECMAScript为此提供了两个辅助方法：**Date.parse()和Date.UTC()**。</p>
-<h5 id="Date-parse"><a href="#Date-parse" class="headerlink" title="Date.parse()"></a>Date.parse()</h5><p>Date.parse()方法接收一个表示日期的字符串参数，尝试将这个字符串转换为表示该日期的毫秒数。格式如下：</p>
-<blockquote>
-<p>“月/日/年”，如”5/23/2019”；<br>  “月名 日，年”，如”May 23, 2019”；<br>  “周几 月名 日 年 时：分：秒 时区”，如”Tue May 232019 00:00:00 GMT-0700”；<br>  ISO 8601扩展格式“YYYY-MM-DDTHH:mm:ss.sssZ”，如2019-05-23T00:00:00（只适用于兼容ES5的实现）</p>
-</blockquote>
-<p>如果传给Date.parse()的字符串<em>并不表示日期</em>，则该方法会返回NaN。如果直接把表示日期的字符串传给Date构造函数，那么**Date会在后台调用Date.parse()**。换句话说，下面两行代码是等价的：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> someDate = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="string">&quot;May 23, 2019&quot;</span>);</span><br><span class="line">等同于</span><br><span class="line"><span class="keyword">let</span> someDate = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="title class_">Date</span>.<span class="title function_">parse</span>(<span class="string">&quot;May 23, 2019&quot;</span>));</span><br></pre></td></tr></table></figure>
-<h5 id="Date-UTC"><a href="#Date-UTC" class="headerlink" title="Date.UTC()"></a>Date.UTC()</h5><p>Date.UTC()方法也返回日期的毫秒表示，但使用的是跟Date.parse()不同的信息来生成这个值。传给Date.UTC()的参数是年、零起点月数（1月是0,2月是1，以此类推）、日（1 ~ 31）、时（0 ~ 23）、分、秒和毫秒。这些参数中，只有前两个（年和月）是必需的。如果不提供日，那么默认为1日。其他参数的默认值都是0。</p>
-<p>与Date.parse()一样，Date.UTC()也会被Date构造函数隐式调用，但有一个区别：<strong>这种情况下创建的是本地日期，不是GMT日期</strong></p>
-<h5 id="toLocaleString-、toString-和valueOf"><a href="#toLocaleString-、toString-和valueOf" class="headerlink" title="toLocaleString()、toString()和valueOf()"></a>toLocaleString()、toString()和valueOf()</h5><p>Date类型重写了toLocaleString()、toString()和valueOf()方法。但与其他类型不同，重写后这些方法的返回值不一样。</p>
-<blockquote>
-<p>Date类型的toLocaleString()方法返回与浏览器运行的本地环境一致的日期和时间。这通常意味着格式中包含针对时间的AM（上午）或PM（下午），但不包含时区信息（具体格式可能因浏览器而不同）<br>toString()方法通常返回带时区信息的日期和时间，而时间也是以24小时制（0~23）表示的。<br>Date类型的valueOf()方法根本就不返回字符串，这个方法被重写后返回的是日期的毫秒表示。因此，操作符（如小于号和大于号）可以直接使用它返回的值。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">toLocaleString</span>() -<span class="number">2</span>/<span class="number">1</span>/<span class="number">2019</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span> <span class="variable constant_">AM</span></span><br><span class="line"><span class="title function_">toString</span>() - <span class="title class_">Thu</span> <span class="title class_">Feb</span> <span class="number">12019</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> <span class="variable constant_">GMT</span>-<span class="number">0800</span> (<span class="title class_">Pacific</span> <span class="title class_">Standard</span> <span class="title class_">Time</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> date1 = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2019</span>, <span class="number">0</span>, <span class="number">1</span>);     <span class="comment">// 2019年1月1日</span></span><br><span class="line"><span class="keyword">let</span> date2 = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2019</span>, <span class="number">1</span>, <span class="number">1</span>);     <span class="comment">// 2019年2月1日</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(date1 &lt; date2); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(date1 &gt; date2); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-<h4 id="日期格式化方法"><a href="#日期格式化方法" class="headerlink" title="日期格式化方法"></a>日期格式化方法</h4><p>Date类型有几个专门用于格式化日期的方法，它们都会返回字符串：</p>
-<blockquote>
-<p>toDateString()显示日期中的周几、月、日、年（格式特定于实现）；<br>  toTimeString()显示日期中的时、分、秒和时区（格式特定于实现）；<br>  toLocaleDateString()显示日期中的周几、月、日、年（格式特定于实现和地区）；toLocaleTimeString()显示日期中的时、分、秒（格式特定于实现和地区）；<br>  toUTCString()显示完整的UTC日期（格式特定于实现）。</p>
-</blockquote>
 ]]></content>
       <tags>
         <tag>javascript</tag>
@@ -478,8 +412,82 @@ useRef()返回的就是一个普通的JS对象：<code>&#123;current:undefined&#
       </tags>
   </entry>
   <entry>
+    <title>js笔记-Date</title>
+    <url>/2023/03/14/js%E7%AC%94%E8%AE%B0-Date/</url>
+    <content><![CDATA[<p>ECMAScript的Date类型参考了Java早期版本中的java.util.Date。为此，Date类型将日期保存为自协调世界时（UTC, Universal Time Coordinated）时间1970年1月1日午夜（零时）至今所经过的毫秒数。使用这种存储格式，Date类型可以精确表示1970年1月1日之前及之后285616年的日期。</p>
+<h4 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> now = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br></pre></td></tr></table></figure>
+<h4 id="两个辅助方法"><a href="#两个辅助方法" class="headerlink" title="两个辅助方法"></a>两个辅助方法</h4><p>在不给Date构造函数传参数的情况下，创建的对象将保存当前日期和时间。要基于其他日期和时间创建日期对象，必须传入其毫秒表示（UNIX纪元1970年1月1日午夜之后的毫秒数）。ECMAScript为此提供了两个辅助方法：**Date.parse()和Date.UTC()**。</p>
+<h5 id="Date-parse"><a href="#Date-parse" class="headerlink" title="Date.parse()"></a>Date.parse()</h5><p>Date.parse()方法接收一个表示日期的字符串参数，尝试将这个字符串转换为表示该日期的毫秒数。格式如下：</p>
+<blockquote>
+<p>“月/日/年”，如”5/23/2019”；<br>  “月名 日，年”，如”May 23, 2019”；<br>  “周几 月名 日 年 时：分：秒 时区”，如”Tue May 232019 00:00:00 GMT-0700”；<br>  ISO 8601扩展格式“YYYY-MM-DDTHH:mm:ss.sssZ”，如2019-05-23T00:00:00（只适用于兼容ES5的实现）</p>
+</blockquote>
+<p>如果传给Date.parse()的字符串<em>并不表示日期</em>，则该方法会返回NaN。如果直接把表示日期的字符串传给Date构造函数，那么**Date会在后台调用Date.parse()**。换句话说，下面两行代码是等价的：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> someDate = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="string">&quot;May 23, 2019&quot;</span>);</span><br><span class="line">等同于</span><br><span class="line"><span class="keyword">let</span> someDate = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="title class_">Date</span>.<span class="title function_">parse</span>(<span class="string">&quot;May 23, 2019&quot;</span>));</span><br></pre></td></tr></table></figure>
+<h5 id="Date-UTC"><a href="#Date-UTC" class="headerlink" title="Date.UTC()"></a>Date.UTC()</h5><p>Date.UTC()方法也返回日期的毫秒表示，但使用的是跟Date.parse()不同的信息来生成这个值。传给Date.UTC()的参数是年、零起点月数（1月是0,2月是1，以此类推）、日（1 ~ 31）、时（0 ~ 23）、分、秒和毫秒。这些参数中，只有前两个（年和月）是必需的。如果不提供日，那么默认为1日。其他参数的默认值都是0。</p>
+<p>与Date.parse()一样，Date.UTC()也会被Date构造函数隐式调用，但有一个区别：<strong>这种情况下创建的是本地日期，不是GMT日期</strong></p>
+<h5 id="toLocaleString-、toString-和valueOf"><a href="#toLocaleString-、toString-和valueOf" class="headerlink" title="toLocaleString()、toString()和valueOf()"></a>toLocaleString()、toString()和valueOf()</h5><p>Date类型重写了toLocaleString()、toString()和valueOf()方法。但与其他类型不同，重写后这些方法的返回值不一样。</p>
+<blockquote>
+<p>Date类型的toLocaleString()方法返回与浏览器运行的本地环境一致的日期和时间。这通常意味着格式中包含针对时间的AM（上午）或PM（下午），但不包含时区信息（具体格式可能因浏览器而不同）<br>toString()方法通常返回带时区信息的日期和时间，而时间也是以24小时制（0~23）表示的。<br>Date类型的valueOf()方法根本就不返回字符串，这个方法被重写后返回的是日期的毫秒表示。因此，操作符（如小于号和大于号）可以直接使用它返回的值。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">toLocaleString</span>() -<span class="number">2</span>/<span class="number">1</span>/<span class="number">2019</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span> <span class="variable constant_">AM</span></span><br><span class="line"><span class="title function_">toString</span>() - <span class="title class_">Thu</span> <span class="title class_">Feb</span> <span class="number">12019</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> <span class="variable constant_">GMT</span>-<span class="number">0800</span> (<span class="title class_">Pacific</span> <span class="title class_">Standard</span> <span class="title class_">Time</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> date1 = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2019</span>, <span class="number">0</span>, <span class="number">1</span>);     <span class="comment">// 2019年1月1日</span></span><br><span class="line"><span class="keyword">let</span> date2 = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2019</span>, <span class="number">1</span>, <span class="number">1</span>);     <span class="comment">// 2019年2月1日</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(date1 &lt; date2); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(date1 &gt; date2); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h4 id="日期格式化方法"><a href="#日期格式化方法" class="headerlink" title="日期格式化方法"></a>日期格式化方法</h4><p>Date类型有几个专门用于格式化日期的方法，它们都会返回字符串：</p>
+<blockquote>
+<p>toDateString()显示日期中的周几、月、日、年（格式特定于实现）；<br>  toTimeString()显示日期中的时、分、秒和时区（格式特定于实现）；<br>  toLocaleDateString()显示日期中的周几、月、日、年（格式特定于实现和地区）；toLocaleTimeString()显示日期中的时、分、秒（格式特定于实现和地区）；<br>  toUTCString()显示完整的UTC日期（格式特定于实现）。</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>javascript笔记</title>
+    <url>/2023/03/03/js%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h3 id="async与defer"><a href="#async与defer" class="headerlink" title="async与defer"></a>async与defer</h3><p>async：可选。表示应该立即开始下载脚本，但不能阻止其他页面动作，比如下载资源或等待其他脚本加载。只对外部脚本文件有效。</p>
+<p>defer：可选。表示脚本可以延迟到文档完全被解析和显示之后再执行。只对外部脚本文件有效。在IE7及更早的版本中，对行内脚本也可以指定这个属性。</p>
+<blockquote>
+<p>当浏览器碰到 script 脚本的时候：<br><code>1 &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;</code><br> 没有 defer 或 async，浏览器会立即加载并执行指定的脚本，“立即”指的是在渲染该 script 标签之下的文档元素之前，也就是说不等待后续载入的文档元素，读到就加载并执行。<br> 2 <code>&lt;script async src=&quot;script.js&quot;&gt;&lt;/script&gt;</code><br> 有 async，加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步）。<br> 3 <code>&lt;script defer src=&quot;myscript.js&quot;&gt;&lt;/script&gt;</code><br>  有 defer，加载后续文档元素的过程将和 script.js 的加载并行进行（异步），但是 script.js 的执行要在所有元素解析完成之后，DOMContentLoaded 事件触发之前完成。</p>
+</blockquote>
+<p><img src="../images/defer_async.jpg"><br>蓝色线代表网络读取，红色线代表执行时间，这俩都是针对脚本的；绿色线代表 HTML 解析。</p>
+<h3 id="let与var–块作用域与函数作用域"><a href="#let与var–块作用域与函数作用域" class="headerlink" title="let与var–块作用域与函数作用域"></a>let与var–块作用域与函数作用域</h3><p>let与var的作用差不多，最明显的区别是：<code>let声明的范围是块作用域，var声明的范围是函数作用域</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;aa&#x27;</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> age = <span class="number">26</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(age); <span class="comment">// 26</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(age) <span class="comment">// 未定义</span></span><br></pre></td></tr></table></figure>
+<p>结合代码来看，age报错了是因为作用域仅限于<code>块</code>，即<code>&#123;&#125;</code>之间，而name没有报错是因为作用域是整个函数内。如果下面这种情况</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;aa&#x27;</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// aa</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name) <span class="comment">// 未定义，因为name作用域只在test函数内</span></span><br></pre></td></tr></table></figure>
+<p>要清楚了解块作用域与函数作用域的区别，不能觉得var定义的变量在哪里都可以使用</p>
+<h3 id="变量、缓存与作用域"><a href="#变量、缓存与作用域" class="headerlink" title="变量、缓存与作用域"></a>变量、缓存与作用域</h3><p>ECMAScript变量可以包含两种不同类型的数据：原始值和引用值。<span style="font-weight: bold;">原始值（primitive value）就是最简单的数据，引用值（reference value）则是由多个值构成的对象。</span><br>6种原始值：<code>Undefined、Null、Boolean、Number、String和Symbol</code></p>
+<p>原始值和引用值的区别：</p>
+<ul>
+<li>原始值大小固定，因此保存在<strong>栈内存</strong>上。</li>
+<li>从一个变量到另一个变量复制原始值会创建该值的第二个副本。</li>
+<li>引用值是对象，存储在<strong>堆内存</strong>上。</li>
+<li>包含引用值的变量实际上只包含指向相应对象的一个指针，而不是对象本身。</li>
+<li>从一个变量到另一个变量复制引用值只会复制指针，因此结果是两个变量都指向同一个对象。</li>
+</ul>
+<p>原始值不能有属性，尽管尝试给原始值添加属性不会报错</p>
+<blockquote>
+<p>注意，原始类型的初始化可以只使用原始字面量形式。如果使用的是new关键字，则JavaScript会创建一个<strong>Object</strong>类型的实例，但其行为类似原始值。下面来看看这两种初始化方式的差异：</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> name1 = <span class="string">&quot;Nicholas&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> name2 = <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;Matt&quot;</span>);</span><br><span class="line">name1.<span class="property">age</span> = <span class="number">27</span>;</span><br><span class="line">name2.<span class="property">age</span> = <span class="number">26</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name1.<span class="property">age</span>);     <span class="comment">// undefined</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name2.<span class="property">age</span>);     <span class="comment">// 26</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">typeof</span> name1); <span class="comment">// string</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">typeof</span> name2); <span class="comment">// object</span></span><br></pre></td></tr></table></figure>
+
+<p>ECMAScript中所有函数的参数都是按值传递的。这意味着函数外的值会被复制到函数内部的参数中，就像从一个变量复制到另一个变量一样。如果是原始值，那么就跟原始值变量的复制一样，如果是引用值，那么就跟引用值变量的复制一样。</p>
+<p><strong>typeof可以判断原始值，对引用值不好判断</strong>。即可以拿来判断一个变量是否为字符串、数值、布尔值或undefined，当<em>值是对象或null，那么typeof返回”object”</em><br>判断引用值： <strong>instanceof</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">用法：result= variableinstanceof constructor</span><br><span class="line"></span><br><span class="line">  console.log(person instanceof Object);   // 变量person是Object吗？</span><br><span class="line">  console.log(colors instanceof Array);    // 变量colors是Array吗？</span><br><span class="line">  console.log(pattern instanceof RegExp); // 变量pattern是RegExp吗？</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>js笔记-类</title>
+    <url>/2023/03/21/js%E7%AC%94%E8%AE%B0-%E7%B1%BB/</url>
+    <content><![CDATA[]]></content>
+      <tags>
+        <tag>javascript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>javascript阅读笔记-对象与类</title>
-    <url>/2023/03/19/javascript%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%B1%BB/</url>
+    <url>/2023/03/19/js%E7%AC%94%E8%AE%B0-%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%B1%BB/</url>
     <content><![CDATA[<h3 id="1、理解对象"><a href="#1、理解对象" class="headerlink" title="1、理解对象"></a>1、理解对象</h3><h4 id="1-1-对象的属性"><a href="#1-1-对象的属性" class="headerlink" title="1.1 对象的属性"></a>1.1 对象的属性</h4><p>ECMA-262使用一些内部特性来描述属性的特征。这些特性是由为JavaScript实现引擎的规范定义的。因此，开发者不能在JavaScript中直接访问这些特性。为了将某个特性标识为内部特性，规范会用两个中括号把特性的名称括起来，比如<code>[[Enumerable]]</code>。</p>
 <p>属性分两种，<em><strong>数据属性和访问器属性</strong></em></p>
 <h5 id="数据属性"><a href="#数据属性" class="headerlink" title="数据属性"></a>数据属性</h5><p>数据属性包含一个保存数据值的位置。值会从这个位置读取，也会写入到这个位置。数据属性有4个特性描述它们的行为。</p>
