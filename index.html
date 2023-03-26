@@ -200,10 +200,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-03-21 23:56:41 / 修改时间：23:58:01" itemprop="dateCreated datePublished" datetime="2023-03-21T23:56:41+08:00">2023-03-21</time>
+              <time title="创建时间：2023-03-21 23:56:41" itemprop="dateCreated datePublished" datetime="2023-03-21T23:56:41+08:00">2023-03-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-26 23:55:50" itemprop="dateModified" datetime="2023-03-26T23:55:50+08:00">2023-03-26</time>
+              </span>
 
           
 
@@ -216,7 +222,53 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h3 id="1、类定义"><a href="#1、类定义" class="headerlink" title="1、类定义"></a>1、类定义</h3><p>与函数类型相似，定义类也有两种主要方式：<strong>类声明和类表达式</strong>。这两种方式都使用class关键字加大括号：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 类声明</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;&#125;</span><br><span class="line"><span class="comment">// 类表达式</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Animal</span> = <span class="keyword">class</span> &#123;&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>与函数表达式类似，类表达式在它们被求值前也不能引用。不过，与函数定义不同的是，虽然函数声明可以提升，但类定义不能。另一个跟函数声明不同的地方是，函数受函数作用域限制，而类受块作用域限制。</p>
+<h4 id="类的构成"><a href="#类的构成" class="headerlink" title="类的构成"></a>类的构成</h4><p>类可以包含<em>构造函数方法、实例方法、获取函数、设置函数和静态类方法</em>，但这些都不是必需的。空的类定义照样有效。类表达式的名称是可选的。在把类表达式赋值给变量后，可以通过name属性取得类表达式的名称字符串。但不能在类表达式作用域外部访问这个标识符。</p>
+<h3 id="2、类构造函数"><a href="#2、类构造函数" class="headerlink" title="2、类构造函数"></a>2、类构造函数</h3><p>onstructor关键字用于在类定义块内部创建类的构造函数。方法名constructor会告诉解释器在使用new操作符创建类的新实例时，应该调用这个函数。构造函数的定义不是必需的，<em>不定义构造函数相当于将构造函数定义为空函数</em>。</p>
+<p>类构造函数与构造函数的主要区别是，调用类构造函数必须使用new操作符。而普通构造函数如果不使用new调用，那么就会<strong>以全局的this（通常是window）作为内部对象</strong>。调用类构造函数时如果忘了使用new则会抛出错误。</p>
+<p>为了在实例间共享方法，类定义语法把在类块中定义的方法作为原型方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 添加到this的所有内容都会存在于不同的实例上</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">locate</span> = <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;instance&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 在类块中定义的所有内容都会定义在类的原型上</span></span><br><span class="line">  <span class="title function_">locate</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;prototype&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line">p.<span class="title function_">locate</span>();                     <span class="comment">// instance</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="title function_">locate</span>();   <span class="comment">// prototype</span></span><br></pre></td></tr></table></figure>
+
+<p>可以把方法定义在类构造函数中或者类块中，但不能在类块中给原型添加原始值或对象作为成员数据：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Jake&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Uncaught SyntaxError: Unexpected token</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3、静态类方法"><a href="#3、静态类方法" class="headerlink" title="3、静态类方法"></a>3、静态类方法</h3><p>可以在类上定义静态方法。这些方法通常用于执行<strong>不特定于实例的操作</strong>，也不要求存在类的实例。与原型成员类似，静态成员每个类上只能有一个。静态类成员在类定义中使用static关键字作为前缀。在静态成员中，this引用类自身。其他所有约定跟原型成员一样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 添加到this的所有内容都会存在于不同的实例上</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">locate</span> = <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;instance&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 定义在类的原型对象上</span></span><br><span class="line">  <span class="title function_">locate</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;prototype&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//定义在类本身上</span></span><br><span class="line">  <span class="title function_">staticlocate</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;class&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line">p.<span class="title function_">locate</span>();                     <span class="comment">// instance, Person &#123;&#125;</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="title function_">locate</span>();   <span class="comment">// prototype, &#123;constructor: ... &#125;</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="title function_">locate</span>();               <span class="comment">// class, class Person &#123;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4、继承"><a href="#4、继承" class="headerlink" title="4、继承"></a>4、继承</h3><h4 id="继承基础"><a href="#继承基础" class="headerlink" title="继承基础"></a>继承基础</h4><p>ES6类支持单继承。使用<code>extends</code>关键字，就可以继承任何拥有[[Construct]]和原型的对象。很大程度上，这意味着不仅可以继承一个类，也可以继承普通的构造函数（保持向后兼容）。派生类都会通过原型链访问到类和原型上定义的方法。this的值会反映调用相应方法的实例或者类</p>
+<h4 id="构造函数、HomeObject和super"><a href="#构造函数、HomeObject和super" class="headerlink" title="构造函数、HomeObject和super()"></a>构造函数、HomeObject和super()</h4><p>派生类的方法可以通过super关键字引用它们的原型。这个关键字只能在派生类中使用，而且仅限于<strong>类构造函数、实例方法和静态方法内部</strong>。在类构造函数中使用super可以调用父类构造函数。</p>
+<blockquote>
+<p>ES6给类构造函数和静态方法添加了内部特性[[HomeObject]]，这个特性是一个指针，指向定义该方法的对象。这个指针是自动赋值的，而且只能在JavaScript引擎内部访问。super始终会定义为[[HomeObject]]的原型。</p>
+</blockquote>
+<p>在使用super时要注意几个问题：</p>
+<pre><code>class Vehicle &#123;
+  constructor() &#123;
+    super();
+    // SyntaxError: &#39;super&#39; keyword unexpected
+  &#125;
+&#125;
+</code></pre>
+<ol>
+<li><p>super只能在派生类构造函数和静态方法中使用。</p>
+</li>
+<li><p>不能单独引用super关键字，要么用它调用构造函数，要么用它引用静态方法。</p>
+</li>
+<li><p>调用super()会调用父类构造函数，并将返回的实例赋值给this。</p>
+</li>
+<li><p>super()的行为如同调用构造函数，如果需要给父类构造函数传参，则需要手动传入。</p>
+</li>
+<li><p>如果没有定义类构造函数，在实例化派生类时会调用super()，而且会传入所有传给派生类的参数。</p>
+</li>
+<li><p>在类构造函数中，不能在调用super()之前引用this。</p>
+</li>
+<li><p>如果在派生类中显式定义了构造函数，则要么必须在其中调用super()，要么必须在其中返回一个对象。</p>
+<h4 id="抽象基类"><a href="#抽象基类" class="headerlink" title="抽象基类"></a>抽象基类</h4><p>有时候可能需要定义这样一个类，它可供其他类继承，但本身不会被实例化。虽然ECMAScript没有专门支持这种类的语法，但通过new.target也很容易实现。new.target保存通过new关键字调用的类或函数。通过在实例化时检测new.target是不是抽象基类，可以阻止对抽象基类的实例化：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 抽象基类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span>.<span class="property">target</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">new</span>.<span class="property">target</span> === <span class="title class_">Vehicle</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;Vehicle cannot be directly instantiated&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 派生类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Bus</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vehicle</span> &#123;&#125;</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Bus</span>();         <span class="comment">// class Bus &#123;&#125;</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Vehicle</span>();    <span class="comment">// class Vehicle &#123;&#125;</span></span><br><span class="line"><span class="comment">// Error: Vehicle cannot be directly instantiated</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+
       
     </div>
 
@@ -266,7 +318,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-20 23:43:24" itemprop="dateModified" datetime="2023-03-20T23:43:24+08:00">2023-03-20</time>
+                <time title="修改时间：2023-03-26 23:33:08" itemprop="dateModified" datetime="2023-03-26T23:33:08+08:00">2023-03-26</time>
               </span>
 
           
@@ -291,7 +343,7 @@
 
 <p>需要注意的是，如果把configurable设置成false，除了代表这个属性不能删除，也意味着这个属性是<strong>不可配置的</strong>。一个属性被定义为不可配置之后，<strong>就不能再变回可配置的了</strong>。再次调用Object.defineProperty()并修改任何非writable属性会导致错误：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> person = &#123;&#125;;</span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(person, <span class="string">&quot;name&quot;</span>, &#123;</span><br><span class="line">  <span class="attr">configurable</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">value</span>: <span class="string">&quot;Nicholas&quot;</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 抛出错误</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(person, <span class="string">&quot;name&quot;</span>, &#123;</span><br><span class="line">  <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">value</span>: <span class="string">&quot;Nicholas&quot;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在调用Object.defineProperty()时，configurable、enumerable和writable的值如果不指定，则都默认为false。</p>
+<p>xxxxxxxxxx // objectA和objectB通过各自的属性相互引用，意味着它们的引用数都是2，永远不会变成0// 如果使用引用计数，这两个对象在函数结束后也不会被回收，内存不会被释放  function problem() {    let objectA = new Object();    let objectB = new Object();    objectA.someOtherObject = objectB;    objectB.anotherObject = objectA;  }javascript</p>
 <h5 id="访问器属性"><a href="#访问器属性" class="headerlink" title="访问器属性"></a>访问器属性</h5><p>访问器属性不包含数据值。相反，它们包含一个<em>获取（getter）函数</em>和一个<em>设置（setter）函数</em>，不过这两个函数不是必需的。在读取访问器属性时，会调用获取函数，这个函数的责任就是返回一个有效的值。在写入访问器属性时，会调用设置函数并传入新值，这个函数必须决定对数据做出什么修改。访问器属性有4个特性描述它们的行为。</p>
 <blockquote>
 <p>❑ <code>[[Configurable]]</code>：表示属性是否可以通过delete删除并重新定义，是否可以修改它的特性，以及是否可以把它改为数据属性。默认情况下，所有直接定义在对象上的属性的这个特性都是true。<br>❑ <code>[[Enumerable]]</code>：表示属性是否可以通过for-in循环返回。默认情况下，所有直接定义在对象上的属性的这个特性都是true。<br>❑ <code>[[Get]]</code>：获取函数，在读取属性时调用。默认值为undefined。<br>❑ <code>[[Set]]</code>：设置函数，在写入属性时调用。默认值为undefined。</p>
